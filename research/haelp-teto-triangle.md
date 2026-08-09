@@ -1,6 +1,6 @@
 # Analysis: @haelp/teto (Triangle.js)
 
-**What it is:** A TypeScript library — npm `@haelp/teto`, repo [Genius6942/triangle](https://github.com/Genius6942/triangle), docs at <https://triangle.haelp.dev> — that is a **programmatically controllable TETR.IO client**. Latest examined version **4.2.7**. Powers community projects like MochBot and ZZZTOJ.
+**What it is:** A TypeScript library — npm `@haelp/teto`, repo [Genius6942/triangle](https://github.com/Genius6942/triangle), docs at <https://triangle.haelp.dev> — that is a **programmatically controllable TETR.IO client**. Latest examined version **4.2.7**. Keywords: `tetrio, ribbon, websocket, bot`. Powers community projects like MochBot and ZZZTOJ.
 
 > Not officially supported/endorsed by TETR.IO. Main-game API requires an **official bot account**; malformed messages risk bans (hence "TypeScript highly recommended"). Pinned to TETR.IO Beta v1.7.8 / Node 22.x LTS. The Tetra Channel API and the **engine** are open to anyone.
 
