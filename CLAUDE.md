@@ -21,11 +21,11 @@ There is no linter or build step. Java must be on PATH for anything that shells 
 
 ## Hard rule: no native solving of perfect clears
 
-Genuine perfect-clear search is delegated to knewjade's `sfinder.jar` (`reference/sfinder.jar`) via the thin subprocess wrapper in `tetris_sdk/pc/sfinder.py`; a native Python PC solver was tried, was ~100x slower, and was removed (its corpse and failing tests live in `archive/native_solver/` — do not resurrect it or run its tests). The rule applies **only to perfect clears**: other search problems — opener lines, region tilings, reachability, queue coverage — are solved natively (see `tetris_sdk/opener/tiles.py`), and sfinder's PC encoding is provably wrong for opener lines.
+Genuine perfect-clear search is delegated to knewjade's `sfinder.jar` (`reference/sfinder.jar`) via the thin subprocess wrapper in `mino_sdk/pc/sfinder.py`; a native Python PC solver was tried, was ~100x slower, and was removed (its corpse and failing tests live in `archive/native_solver/` — do not resurrect it or run its tests). The rule applies **only to perfect clears**: other search problems — opener lines, region tilings, reachability, queue coverage — are solved natively (see `mino_sdk/opener/tiles.py`), and sfinder's PC encoding is provably wrong for opener lines.
 
 ## Architecture
 
-`tetris_sdk/` is a layered library; everything below builds on the core:
+`mino_sdk/` is a layered library; everything below builds on the core:
 
 - **Core** — `types` (Cell), `board` (10-wide Board), `pieces` (PieceType, SRS / SRS+ kick tables), `engine` (BFS `reachable`, spin classification via the immobile rule, `instant=True` mode where soft drop teleports), `events` (lock classification, `B2BRule` incl. S2 all-spin).
 - **`fumen/`** — encoder/decoder/parser for fumen strings (the interchange format used everywhere; boards are routinely round-tripped through fumens).

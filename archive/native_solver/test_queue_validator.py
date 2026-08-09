@@ -1,6 +1,6 @@
 import pytest
-from tetris_sdk import PieceType
-from tetris_sdk.solver.queue_validator import (
+from mino_sdk import PieceType
+from mino_sdk.solver.queue_validator import (
     is_placement_order_valid,
     enumerate_placement_orders,
 )

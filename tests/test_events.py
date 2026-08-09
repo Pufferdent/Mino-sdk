@@ -1,6 +1,6 @@
 import pytest
 
-from tetris_sdk import (
+from mino_sdk import (
     Board,
     Cell,
     Piece,
@@ -216,7 +216,7 @@ class TestPerfectClear:
 
 class TestS2Attack:
     def test_normal_clears_send_0124_spun_or_not(self):
-        from tetris_sdk.events import attack
+        from mino_sdk.events import attack
         for spin in (SpinType.NONE, SpinType.FULL, SpinType.MINI):
             for piece in (PieceType.S, PieceType.Z, PieceType.L, PieceType.I):
                 assert attack(piece, spin, 1) == 0
@@ -225,7 +225,7 @@ class TestS2Attack:
                 assert attack(piece, spin, 4) == 4
 
     def test_full_t_spins_send_246(self):
-        from tetris_sdk.events import attack
+        from mino_sdk.events import attack
         assert attack(PieceType.T, SpinType.FULL, 1) == 2
         assert attack(PieceType.T, SpinType.FULL, 2) == 4
         assert attack(PieceType.T, SpinType.FULL, 3) == 6
@@ -234,7 +234,7 @@ class TestS2Attack:
         assert attack(PieceType.T, SpinType.MINI, 2) == 1
 
     def test_b2b_clear_adds_one(self):
-        from tetris_sdk.events import attack
+        from mino_sdk.events import attack
         assert attack(PieceType.I, SpinType.NONE, 4, b2b=True) == 5
         assert attack(PieceType.T, SpinType.FULL, 2, b2b=True) == 5
         assert attack(PieceType.S, SpinType.FULL, 2, b2b=True) == 2
@@ -244,6 +244,6 @@ class TestS2Attack:
 
     def test_s1_is_not_implemented(self):
         import pytest
-        from tetris_sdk.events import B2BRule, attack
+        from mino_sdk.events import B2BRule, attack
         with pytest.raises(NotImplementedError):
             attack(PieceType.T, SpinType.FULL, 2, rule=B2BRule.S1)

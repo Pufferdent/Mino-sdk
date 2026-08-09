@@ -7,7 +7,7 @@ This change adds **one mutable board** that locks a piece and returns an **`Even
 ## What Changes
 
 - Introduce an **`Event`** value type with an **`EventKind`** — `PLACEMENT` (a lock that cleared no lines and was not a spin), `SPIN` (a spin that cleared no lines, "spin-0"), and `CLEAR` (a lock that cleared ≥1 line). Every lock produces exactly one `Event`.
-- Introduce **event classification** — pure `(piece, spin, lines) → (kind, name)` mapping. Line-clear names use **`Quad`** for 4 lines (not "Tetris"): `Single`/`Double`/`Triple`/`Quad`; `T-Spin [Mini] Single/Double/Triple`; `<Piece>-Spin <Lines>` for non-T spins. Spin-0 names: `T-Spin`/`T-Spin Mini`/`<Piece>-Spin`. Placement: `Placement`.
+- Introduce **event classification** — pure `(piece, spin, lines) → (kind, name)` mapping. Line-clear names use **`Quad`** for 4 lines (not the legacy four-line-clear name): `Single`/`Double`/`Triple`/`Quad`; `T-Spin [Mini] Single/Double/Triple`; `<Piece>-Spin <Lines>` for non-T spins. Spin-0 names: `T-Spin`/`T-Spin Mini`/`<Piece>-Spin`. Placement: `Placement`.
 - Introduce **`B2BRule`** with two modes:
   - **`S1`** (TETR.IO Season 1): a clear is back-to-back-eligible iff it is a **Quad** or a **T-spin that cleared lines**. Non-T spins do *not* count.
   - **`S2`** (TETR.IO Season 2): a clear is eligible iff it is a **Quad** or **any spin that cleared lines** (all-spin).
@@ -24,8 +24,8 @@ This change adds **one mutable board** that locks a piece and returns an **`Even
 
 ## Impact
 
-- **New module**: `tetris_sdk/events.py` — `Event`, `EventKind`, `B2BRule`, `classify_lock(piece, spin, lines, rule)`.
-- **Modified**: `tetris_sdk/board.py` — `b2b`/`combo`/`b2b_rule`; `lock(piece, spin=SpinType.NONE) -> Event`.
+- **New module**: `mino_sdk/events.py` — `Event`, `EventKind`, `B2BRule`, `classify_lock(piece, spin, lines, rule)`.
+- **Modified**: `mino_sdk/board.py` — `b2b`/`combo`/`b2b_rule`; `lock(piece, spin=SpinType.NONE) -> Event`.
 - **Depends on**: `add-move-engine` for `SpinType` (the spin is supplied by the caller, typically a move-engine `Placement.spin`; the board does not recompute it).
 - **Public API** (`__init__.py`): export `Event`, `EventKind`, `B2BRule`.
 - **Tests**: new `tests/test_events.py`; Board lock/B2B tests under both rules.

@@ -2,12 +2,12 @@
 
 ## Purpose
 
-The Board module provides a standard modern Tetris playfield representation — a 40-row × 10-column grid with per-cell piece color tracking, row inspection, and line clear logic.
+The Board module provides a standard modern stacker playfield representation — a 40-row × 10-column grid with per-cell piece color tracking, row inspection, and line clear logic.
 
 ## Requirements
 
 ### Requirement: Board dimensions
-The Board SHALL represent a modern Tetris playfield with 40 rows and 10 columns. Row 0 SHALL be the bottom of the visible playfield and row 39 SHALL be the top.
+The Board SHALL represent a modern stacker playfield with 40 rows and 10 columns. Row 0 SHALL be the bottom of the visible playfield and row 39 SHALL be the top.
 
 #### Scenario: Board created with correct dimensions
 - **WHEN** a Board is instantiated with default parameters

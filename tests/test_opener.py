@@ -1,9 +1,9 @@
 import pytest
 
-from tetris_sdk.board import Board
-from tetris_sdk.opener import Node
-from tetris_sdk.pieces import PieceType
-from tetris_sdk.types import Cell
+from mino_sdk.board import Board
+from mino_sdk.opener import Node
+from mino_sdk.pieces import PieceType
+from mino_sdk.types import Cell
 
 T, I, L, J, S, Z, O = (
     PieceType.T, PieceType.I, PieceType.L,

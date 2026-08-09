@@ -1,10 +1,10 @@
-"""Tests for the tetris_sdk.pc perfect-clear tooling."""
+"""Tests for the mino_sdk.pc perfect-clear tooling."""
 
 import os
 
 import pytest
 
-from tetris_sdk.pc import (
+from mino_sdk.pc import (
     pc_number,
     leaves,
     receives,
@@ -13,8 +13,8 @@ from tetris_sdk.pc import (
     segment_fumen,
     combine_save,
 )
-from tetris_sdk.pc.quiz import Quiz
-from tetris_sdk.pc.fumen_ops import operation_cells
+from mino_sdk.pc.quiz import Quiz
+from mino_sdk.pc.fumen_ops import operation_cells
 
 FIXTURE = os.path.join(os.path.dirname(__file__), "pc_replay_fixture.fumen")
 

@@ -23,7 +23,7 @@ This is the most demanding consumer of the SDK: it pulls in the entire live-play
 
 ## Impact
 
-- **New modules**: `tetris_sdk/sim/` — `rng.py`, `queue.py`, `handling.py`, `gravity.py`, `engine.py`; and `tetris_sdk/replay/simulate.py` (driver).
+- **New modules**: `mino_sdk/sim/` — `rng.py`, `queue.py`, `handling.py`, `gravity.py`, `engine.py`; and `mino_sdk/replay/simulate.py` (driver).
 - **Reuses (already built)**: `rotate`/kicks, `Board.lock`/`Event`, `classify_spin`, `SpinType`, `reachable` (for placement enumeration / move-path checks).
 - **Depends on**: `add-replay-decode` (consumes `Replay`/`InputEvent`/`Handling`/`ReplayMeta`).
 - **Public API**: export `simulate`, the gravity profile registry, `TetrioRng`/`JstrisRng`, and the frame engine state type.

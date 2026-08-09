@@ -1,11 +1,11 @@
 """The diagram optimizer: forks, scoring, save-grouping, optimal play."""
 import pytest
 
-from tetris_sdk.board import Board
-from tetris_sdk.opener import Bridge, Diagram, KeepB2B, Node
-from tetris_sdk.opener import hold as _hold
-from tetris_sdk.pieces import PieceType
-from tetris_sdk.types import Cell
+from mino_sdk.board import Board
+from mino_sdk.opener import Bridge, Diagram, KeepB2B, Node
+from mino_sdk.opener import hold as _hold
+from mino_sdk.pieces import PieceType
+from mino_sdk.types import Cell
 
 
 def _node(cells):

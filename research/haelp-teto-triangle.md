@@ -1,6 +1,6 @@
 # Analysis: @haelp/teto (Triangle.js)
 
-**What it is:** A TypeScript library — npm `@haelp/teto`, repo [Genius6942/triangle](https://github.com/Genius6942/triangle), docs at <https://triangle.haelp.dev> — that is a **programmatically controllable TETR.IO client**. Latest examined version **4.2.7**. Keywords: `tetrio, tetris, ribbon, websocket, bot`. Powers community projects like MochBot and ZZZTOJ.
+**What it is:** A TypeScript library — npm `@haelp/teto`, repo [Genius6942/triangle](https://github.com/Genius6942/triangle), docs at <https://triangle.haelp.dev> — that is a **programmatically controllable TETR.IO client**. Latest examined version **4.2.7**. Powers community projects like MochBot and ZZZTOJ.
 
 > Not officially supported/endorsed by TETR.IO. Main-game API requires an **official bot account**; malformed messages risk bans (hence "TypeScript highly recommended"). Pinned to TETR.IO Beta v1.7.8 / Node 22.x LTS. The Tetra Channel API and the **engine** are open to anyone.
 
@@ -64,7 +64,7 @@ A standalone, **deterministic** TypeScript reimplementation of TETR.IO's game lo
 
 ## Relevance to this SDK
 
-- **The engine is the closest analog to what this SDK is becoming**: a portable, deterministic Tetris game model. It's a strong reference (or even an interop/validation target) for the SDK's `Board`, `Piece`, `RotationSystem`, and any future live-play simulation.
+- **The engine is the closest analog to what this SDK is becoming**: a portable, deterministic stacker game model. It's a strong reference (or even an interop/validation target) for the SDK's `Board`, `Piece`, `RotationSystem`, and any future live-play simulation.
 - **Replay/frame-input model** (frame-stamped keys → deterministic state) is a clean design to mirror if the SDK adds gameplay simulation, and enables cross-checking SDK output against a known-good engine.
 - **Protocol layer is TETR.IO-specific** (Ribbon/msgpack, bot-account gated) — useful only if the SDK ever needs to connect to live TETR.IO; otherwise the `engine` submodule is the part to study.
 - **Language gap:** TypeScript/Node vs this SDK's Python. No direct import; value is as a *behavioral reference* and potential subprocess/JSON-bridge oracle, similar to how sfinder is used.

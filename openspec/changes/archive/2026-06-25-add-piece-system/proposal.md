@@ -1,6 +1,6 @@
 ## Why
 
-The SDK currently has Board representation and fumen import but no way to express or manipulate tetromino pieces — the fundamental objects of Tetris. Research on placement strategies, AI move evaluation, and game state analysis all require piece types, rotation shapes, wall kick data, and placement operations on a Board.
+The SDK currently has Board representation and fumen import but no way to express or manipulate tetromino pieces — the fundamental objects of the game. Research on placement strategies, AI move evaluation, and game state analysis all require piece types, rotation shapes, wall kick data, and placement operations on a Board.
 
 ## What Changes
 
@@ -20,8 +20,8 @@ The SDK currently has Board representation and fumen import but no way to expres
 
 ## Impact
 
-- **New module**: `tetris_sdk/pieces.py` — PieceType, RotationSystem, SRS class, Piece
-- **Modified**: `tetris_sdk/board.py` — `can_place(piece)` and `place(piece)` methods
+- **New module**: `mino_sdk/pieces.py` — PieceType, RotationSystem, SRS class, Piece
+- **Modified**: `mino_sdk/board.py` — `can_place(piece)` and `place(piece)` methods
 - **Tests**: New `tests/test_pieces.py`, additional Board tests for placement
 - **Public API** (`__init__.py`): Exports PieceType, RotationSystem, SRS, Piece
 - **Data source**: SRS shapes and kick tables verified against Techmino's `RSlist.lua` and `gameTables.lua`

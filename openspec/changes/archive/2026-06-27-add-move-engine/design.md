@@ -134,7 +134,7 @@ This change is the **first code that applies kick tables** — the existing `SRS
 ### Module layout
 
 ```
-tetris_sdk/
+mino_sdk/
 ├── engine.py    # NEW: Move, SpinType, Placement, translate, soft_drop,
 │                #      rotate, immobile, t_corners_filled, classify_spin, reachable
 ├── board.py     # unchanged

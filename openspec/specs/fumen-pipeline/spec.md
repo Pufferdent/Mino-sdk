@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Fumen Pipeline extends the core fumen decoder with multi-page parsing, board-to-string conversion, piece shape computation, fumen encoding, coordinate system utilities, piece type mappings, and color-mode decoding support. These capabilities form the interchange layer between the Tetris SDK and external tools (PC-NN pipelines, fumen viewers, sfinder output).
+The Fumen Pipeline extends the core fumen decoder with multi-page parsing, board-to-string conversion, piece shape computation, fumen encoding, coordinate system utilities, piece type mappings, and color-mode decoding support. These capabilities form the interchange layer between the Mino SDK and external tools (PC-NN pipelines, fumen viewers, sfinder output).
 
 ## Requirements
 

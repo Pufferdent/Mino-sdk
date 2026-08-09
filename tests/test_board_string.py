@@ -1,5 +1,5 @@
 import pytest
-from tetris_sdk import Board, board_from_string, board_to_string, Cell, Piece, PieceType
+from mino_sdk import Board, board_from_string, board_to_string, Cell, Piece, PieceType
 
 
 class TestBoardToString:

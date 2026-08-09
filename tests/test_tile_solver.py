@@ -4,9 +4,9 @@ import random
 import time
 from itertools import permutations
 
-from tetris_sdk.board import Board
-from tetris_sdk.engine import SpinType
-from tetris_sdk.opener import (
+from mino_sdk.board import Board
+from mino_sdk.engine import SpinType
+from mino_sdk.opener import (
     Bridge,
     Clears,
     KeepB2B,
@@ -14,8 +14,8 @@ from tetris_sdk.opener import (
     NoGravityWait,
     TileSolver,
 )
-from tetris_sdk.pieces import PieceType
-from tetris_sdk.types import Cell
+from mino_sdk.pieces import PieceType
+from mino_sdk.types import Cell
 
 BAG = tuple(PieceType[ch] for ch in "TILJSZO")
 
@@ -113,7 +113,7 @@ def test_mid_clear_line_matches_playable_brute_force():
     # sweep was run during development and matched exactly (720/5040).
     bridge = Bridge(EMPTY, _node(MID_END), **MID)
     orders = [r.order for r in bridge.routes()]
-    from tetris_sdk.opener import hold as _hold
+    from mino_sdk.opener import hold as _hold
     root = _hold.trie(orders)
 
     memo: dict = {}
@@ -144,7 +144,7 @@ def test_any_odds_is_a_union_over_queues():
     # piece sits in the bag's first two slots (head or hold). Exactly:
     # |O early| = |I early| = 2*6! = 1440, overlap {O,I} up front = 2*5! = 240,
     # union = 1440 + 1440 - 240 = 2640.
-    from tetris_sdk.opener import any_chance, any_odds
+    from mino_sdk.opener import any_chance, any_odds
     a = Bridge(EMPTY, _node([(0, 0), (0, 1), (1, 0), (1, 1)]), pieces=1)
     b = Bridge(EMPTY, _node([(0, c) for c in range(4)]), pieces=1)
     assert a.odds() == (1440, 5040)
@@ -161,7 +161,7 @@ def test_any_odds_is_a_union_over_queues():
 def test_rotation_system_is_configurable():
     # Default is TETR.IO SRS+; guideline SRS is a parameter away. This line
     # needs no 180s, so both systems must agree exactly.
-    from tetris_sdk.pieces import SRS, SRSPlus
+    from mino_sdk.pieces import SRS, SRSPlus
     default = Bridge(EMPTY, _node(MID_END), **MID)
     assert default.system == SRSPlus()
     assert Bridge(EMPTY, _node(MID_END), **MID, system=SRS()).odds() == \

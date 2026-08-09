@@ -1,5 +1,5 @@
 import pytest
-from tetris_sdk import Board, Cell
+from mino_sdk import Board, Cell
 
 
 class TestBoardDimensions:

@@ -1,10 +1,10 @@
 ## Context
 
-The Tetris SDK currently has Board representation and fumen import but no concept of tetromino pieces. The target audience is Tetris strategy researchers who need to analyze placements, evaluate board states, and generate possible moves across different rotation systems (SRS, Arika, Classic, etc.).
+The Mino SDK currently has Board representation and fumen import but no concept of tetromino pieces. The target audience is stacker strategy researchers who need to analyze placements, evaluate board states, and generate possible moves across different rotation systems (SRS, Arika, Classic, etc.).
 
 The SDK already defines a `Cell` enum with values for each piece color (T=1, I=2, L=3, J=4, S=5, Z=6, O=7). This change builds directly on that foundation.
 
-**Data source:** Rotation shapes and kick tables are verified against Techmino's `RSlist.lua` and `gameTables.lua` — the most comprehensive open-source reference implementation of Tetris rotation systems.
+**Data source:** Rotation shapes and kick tables are verified against Techmino's `RSlist.lua` and `gameTables.lua` — the most comprehensive open-source reference implementation of rotation systems.
 
 ## Goals / Non-Goals
 
@@ -102,7 +102,7 @@ Kick tables map `(from_rotation, to_rotation)` → list of `(row_offset, col_off
 ### Package layout
 
 ```
-tetris_sdk/
+mino_sdk/
 ├── __init__.py        # Exports PieceType, RotationSystem, SRS, Piece, Cell, Board, parse_fumen
 ├── types.py           # Cell enum (unchanged)
 ├── board.py           # Board + can_place, place (modified)

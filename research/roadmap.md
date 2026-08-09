@@ -32,7 +32,7 @@ The L3 logic layer is the **last shared substrate**. Above it, the three persona
 
 ## Now building: `add-game-events` (one proper board)
 
-A single mutable `Board` you commit placements to. `lock(piece, spin) -> Event` places the piece, clears lines, and returns a classified **`Event`** — where **block placement**, **spin-0** (a spin clearing nothing), and **line clear** are all `EventKind`s. Clear names use **`Quad`** (not "Tetris"): `Quad`, `T-Spin Double`, `S-Spin Single`, … Back-to-back is configurable: **`S1`** (TETR.IO Season 1 — only quads + T-spin-with-lines) vs **`S2`** (Season 2 — any line-clearing spin). Combo tracked alongside. No scoring/queue/hold; spin is supplied (from a move-engine `Placement`), not recomputed. See `openspec/changes/add-game-events`.
+A single mutable `Board` you commit placements to. `lock(piece, spin) -> Event` places the piece, clears lines, and returns a classified **`Event`** — where **block placement**, **spin-0** (a spin clearing nothing), and **line clear** are all `EventKind`s. Clear names use **`Quad`** (not the legacy four-line-clear name): `Quad`, `T-Spin Double`, `S-Spin Single`, … Back-to-back is configurable: **`S1`** (TETR.IO Season 1 — only quads + T-spin-with-lines) vs **`S2`** (Season 2 — any line-clearing spin). Combo tracked alongside. No scoring/queue/hold; spin is supplied (from a move-engine `Placement`), not recomputed. See `openspec/changes/add-game-events`.
 
 ## Later: `add-game-state` (deferred — when queue/hold/search need it)
 

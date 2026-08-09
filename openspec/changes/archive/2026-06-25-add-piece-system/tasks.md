@@ -1,6 +1,6 @@
 ## 1. PieceType enum
 
-- [x] 1.1 Create `tetris_sdk/pieces.py` with `PieceType(IntEnum)` — T=1, I=2, L=3, J=4, S=5, Z=6, O=7 — and a `cell` property returning the corresponding `Cell` enum value
+- [x] 1.1 Create `mino_sdk/pieces.py` with `PieceType(IntEnum)` — T=1, I=2, L=3, J=4, S=5, Z=6, O=7 — and a `cell` property returning the corresponding `Cell` enum value
 
 ## 2. RotationSystem and SRS
 
@@ -23,7 +23,7 @@
 
 ## 5. Public API
 
-- [x] 5.1 Export `PieceType`, `RotationSystem`, `SRS`, `Piece` from `tetris_sdk/__init__.py` and add to `__all__`
+- [x] 5.1 Export `PieceType`, `RotationSystem`, `SRS`, `Piece` from `mino_sdk/__init__.py` and add to `__all__`
 
 ## 6. Tests
 

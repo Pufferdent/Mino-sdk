@@ -1,6 +1,6 @@
 # Analysis: solution-finder (sfinder.jar)
 
-**What it is:** A Java command-line tool by knewjade for analyzing Tetris fields — the de-facto standard engine for Perfect Clear (PC) theory, setup-finding, and percent calculations. The `sfinder.jar` examined here is the standard distribution (`Main-Class: Main`, built 2022–2023).
+**What it is:** A Java command-line tool by knewjade for analyzing stacker fields — the de-facto standard engine for Perfect Clear (PC) theory, setup-finding, and percent calculations. The `sfinder.jar` examined here is the standard distribution (`Main-Class: Main`, built 2022–2023).
 
 ## Purpose
 
@@ -51,7 +51,7 @@ Main ─┬─ entry/EntryPointMain        ← CLI dispatch
 - **MinoShifter / MinoTransform** canonicalize piece orientations (e.g. S/Z/I have only 2 distinct rotation states) to prune duplicate states.
 - **Reachability via `core/action` + `core/srs`.** A placement only counts if SRS movement (including kicks, optional soft-drop/180/hold) can actually reach it — distinguishes "fits" from "placeable."
 - **Pattern language** (`common/pattern`): piece-sequence specs like `*p7`, `[^T]!`, `SZ,*,[LJ]p2` drive percent/path over all matching bags.
-- **Fumen I/O** (`common/tetfu`): reads/writes fumen codes (`v115@…`) for field input and solution output — the interop format with the rest of the Tetris tooling ecosystem.
+- **Fumen I/O** (`common/tetfu`): reads/writes fumen codes (`v115@…`) for field input and solution output — the interop format with the rest of the stacker tooling ecosystem.
 - **Concurrency:** `concurrent/` provides multi-threaded checker/checkmate for large searches.
 
 ## Commands (entry points)
@@ -69,7 +69,7 @@ Main ─┬─ entry/EntryPointMain        ← CLI dispatch
 
 ## Relevance to this SDK
 
-sfinder is the **gold-standard reference engine** for PC-mode correctness. For the Tetris SDK:
+sfinder is the **gold-standard reference engine** for PC-mode correctness. For the Mino SDK:
 
 - **Fumen format** is the shared interchange — the SDK already has a `fumen/` parser; sfinder both consumes and emits the same codes, so it's the natural ground-truth for round-trip testing.
 - **SRS + reachability semantics** in `core/srs` and `core/action` define exactly what "a legal placement" means. Any SDK board/movement model should match sfinder's behavior to be trusted by the PC community.

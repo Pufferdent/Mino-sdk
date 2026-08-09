@@ -32,8 +32,8 @@ This change builds that keystone: the **move engine** (architecture layer L2). I
 
 ## Impact
 
-- **New module**: `tetris_sdk/engine.py` — `Move`, `SpinType`, `Placement`, movement/rotation/drop functions, immobility & corner tests, spin classification, `reachable(...)`.
-- **Modified**: `tetris_sdk/pieces.py` — correct `SRS` kick tuples to `(drow, dcol)`; add `SRSPlus` (true TETR.IO SRS+).
+- **New module**: `mino_sdk/engine.py` — `Move`, `SpinType`, `Placement`, movement/rotation/drop functions, immobility & corner tests, spin classification, `reachable(...)`.
+- **Modified**: `mino_sdk/pieces.py` — correct `SRS` kick tuples to `(drow, dcol)`; add `SRSPlus` (true TETR.IO SRS+).
 - **Reuses unchanged**: `Board.can_place`, `Piece.cells`, the `RotationSystem` interface.
 - **Public API** (`__init__.py`): export `Move`, `SpinType`, `Placement`, `SRSPlus`, and the engine entry points.
 - **Tests**: new `tests/test_engine.py`; kick-convention + SRS+ fumen tests.

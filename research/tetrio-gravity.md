@@ -12,12 +12,12 @@ Despite the earlier "obfuscated, don't reverse" note, the mode configs are plain
 text inside it: a `gameModes:{"40l":…,blitz:…}` block, the engine `OptionsList`
 defaults (`g=0.02, gincrease=0, gmargin=0, gravitymay20g=true, locktime=30,
 lockresets=15`), embedded room-preset strings, and the Zenith class's static
-tables. The vendored triangle.js (`tetris_sdk/replay/teto/…/splice.js`) uses
+tables. The vendored triangle.js (`mino_sdk/replay/teto/…/splice.js`) uses
 the same source. **Exact ramp semantics** (from the per-frame update): each
 frame with `frame > gmargin`, `g += gincrease/60` — i.e. `gincrease` is G
 gained per second, starting after `gmargin` frames.
 
-Implemented in `tetris_sdk/sim/gravity.py` (profiles, time ramp, Zenith
+Implemented in `mino_sdk/sim/gravity.py` (profiles, time ramp, Zenith
 tables); `gravity_for()` additionally overlays `g/gincrease/gmargin/locktime/
 lockresets` when a replay's own options carry them.
 
@@ -42,8 +42,8 @@ GRLockDelay   = [0,24,22,20,18,16,15,14,13,12,11]      (freefall mod)
 ```
 
 Independent confirmation + climb-speed model (Propeller Levels, height release
-10%/frame capped 10m): the CN community QP2 doc —
-<https://github.com/MrZ626/modern_tetris_cn_community/blob/main/io_qp2_rule/full.md>.
+10%/frame capped 10m): the CN community QP2 doc — GitHub user `MrZ626`, repo
+`modern_<game>_cn_community`, file `io_qp2_rule/full.md`.
 
 ---
 
@@ -139,7 +139,7 @@ Bundle preset (verbatim in `tetr.io/js/tetrio.js`, both current and "season 1"
 presets): `g=0.02`, `gincrease=0.0035/s`, `gmargin=7200f (2 min)`,
 `locktime=30f`, `lockresets=15`. So `g(t) = 0.02 + 0.0035·max(0, (t−7200)/60)`.
 The previously recorded `0.0025/3600` belongs to the **default custom room**
-preset, not TL. (`locktime` 30f = 500 ms cross-checks the TetrisWiki figure.)
+preset, not TL. (`locktime` 30f = 500 ms cross-checks the community wiki figure.)
 
 ## Remaining threads
 

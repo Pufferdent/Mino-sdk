@@ -1,6 +1,6 @@
 import pytest
 
-from tetris_sdk import Board, Cell, Piece, PieceType, RotationSystem, SRS, SRSPlus
+from mino_sdk import Board, Cell, Piece, PieceType, RotationSystem, SRS, SRSPlus
 
 
 ALL_TYPES = [

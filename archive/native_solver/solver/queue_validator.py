@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Callable
 
 if TYPE_CHECKING:
-    from tetris_sdk.pieces import PieceType
+    from mino_sdk.pieces import PieceType
 
 
 def is_placement_order_valid(

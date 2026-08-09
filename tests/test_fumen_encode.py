@@ -1,9 +1,9 @@
 import pytest
-from tetris_sdk import Board, Cell, PieceType, Piece
-from tetris_sdk.fumen.encoder import encode_fumen
-from tetris_sdk.fumen.decoder import decode_fumen
-from tetris_sdk.fumen.multi_fumen import MultiFumenPage
-from tetris_sdk.fumen.parser import parse_fumen
+from mino_sdk import Board, Cell, PieceType, Piece
+from mino_sdk.fumen.encoder import encode_fumen
+from mino_sdk.fumen.decoder import decode_fumen
+from mino_sdk.fumen.multi_fumen import MultiFumenPage
+from mino_sdk.fumen.parser import parse_fumen
 
 
 def _board_cells_match(a: Board, b: Board) -> bool:
@@ -116,7 +116,7 @@ def test_escaping_matches_the_fumen_unescaped_set():
     A conformant decoder throws on any other raw character, so escaping against
     the wider comment table produced comments other tools could not read.
     """
-    from tetris_sdk.fumen.encoder import _encode_escaped
+    from mino_sdk.fumen.encoder import _encode_escaped
     assert _encode_escaped("PCO 1/7 a-b.c") == "PCO 1/7 a-b.c"
     assert _encode_escaped("a,b") == "a%2Cb"
     assert _encode_escaped("(hi!)") == "%28hi%21%29"
@@ -124,23 +124,23 @@ def test_escaping_matches_the_fumen_unescaped_set():
 
 
 def test_non_latin1_uses_the_u_form():
-    from tetris_sdk.fumen.encoder import _encode_escaped
+    from mino_sdk.fumen.encoder import _encode_escaped
     assert _encode_escaped("あ") == "%u3042"
 
 
 def test_comments_round_trip_through_encode_and_decode():
-    from tetris_sdk.board import Board
-    from tetris_sdk.fumen.encoder import encode_fumen
-    from tetris_sdk.fumen.decoder import decode_fumen
+    from mino_sdk.board import Board
+    from mino_sdk.fumen.encoder import encode_fumen
+    from mino_sdk.fumen.decoder import decode_fumen
     for comment in ["", "PCO", "01/20 JILOZST 1/7", "a,b (c)! 50%", "T-Spin: 100%", "あ"]:
         pages = decode_fumen(encode_fumen([(Board(), comment)]))
         assert pages[0]["comment"] == comment, comment
 
 
 def test_an_overlong_comment_is_truncated_not_wrapped():
-    from tetris_sdk.board import Board
-    from tetris_sdk.fumen.encoder import encode_fumen
-    from tetris_sdk.fumen.decoder import decode_fumen
+    from mino_sdk.board import Board
+    from mino_sdk.fumen.encoder import encode_fumen
+    from mino_sdk.fumen.decoder import decode_fumen
     pages = decode_fumen(encode_fumen([(Board(), "x" * 5000)]))
     assert pages[0]["comment"] == "x" * 4095
 
@@ -149,16 +149,16 @@ def test_an_overlong_comment_is_truncated_not_wrapped():
 
 def test_empty_board_matches_the_canonical_fumen():
     """The all-blank field is the format's "unchanged" sentinel plus a repeat count."""
-    from tetris_sdk.board import Board
-    from tetris_sdk.fumen.encoder import encode_fumen
+    from mino_sdk.board import Board
+    from mino_sdk.fumen.encoder import encode_fumen
     assert encode_fumen([(Board(), "")]) == "v115@vhAAgH"
 
 
 def test_pages_encode_as_deltas_from_the_previous_page():
     """Page N diffs against page N-1, not against an empty board."""
-    from tetris_sdk.board import Board
-    from tetris_sdk.fumen.encoder import encode_fumen
-    from tetris_sdk.types import Cell
+    from mino_sdk.board import Board
+    from mino_sdk.fumen.encoder import encode_fumen
+    from mino_sdk.types import Cell
 
     def row(n):
         b = Board()
@@ -174,10 +174,10 @@ def test_pages_encode_as_deltas_from_the_previous_page():
 
 
 def test_an_unchanged_page_round_trips():
-    from tetris_sdk.board import Board
-    from tetris_sdk.fumen.encoder import encode_fumen
-    from tetris_sdk.fumen.parser import parse_fumen
-    from tetris_sdk.types import Cell
+    from mino_sdk.board import Board
+    from mino_sdk.fumen.encoder import encode_fumen
+    from mino_sdk.fumen.parser import parse_fumen
+    from mino_sdk.types import Cell
 
     def row(n):
         b = Board()
@@ -194,10 +194,10 @@ def test_an_unchanged_page_round_trips():
 
 
 def test_multi_page_round_trips_with_comments():
-    from tetris_sdk.board import Board
-    from tetris_sdk.fumen.encoder import encode_fumen
-    from tetris_sdk.fumen.decoder import decode_fumen
-    from tetris_sdk.types import Cell
+    from mino_sdk.board import Board
+    from mino_sdk.fumen.encoder import encode_fumen
+    from mino_sdk.fumen.decoder import decode_fumen
+    from mino_sdk.types import Cell
 
     pages = []
     for n in range(1, 6):

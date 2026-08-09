@@ -1,6 +1,6 @@
 ## 1. Event model and classification (events.py)
 
-- [x] 1.1 Create `tetris_sdk/events.py` with `EventKind(Enum)` — `PLACEMENT, SPIN, CLEAR` — and a frozen, hashable `Event` dataclass: `kind, piece, spin, lines, name, difficult, back_to_back, b2b, combo, perfect_clear`
+- [x] 1.1 Create `mino_sdk/events.py` with `EventKind(Enum)` — `PLACEMENT, SPIN, CLEAR` — and a frozen, hashable `Event` dataclass: `kind, piece, spin, lines, name, difficult, back_to_back, b2b, combo, perfect_clear`
 - [x] 1.2 Add `B2BRule(Enum)` — `S1, S2`
 - [x] 1.3 Implement `classify_lock(piece, spin, lines) -> tuple[EventKind, str]`: kind from `(lines, spin)`; name per the table (Placement; spin-0 names; Single/Double/Triple/`Quad`; T-Spin [Mini] Single/Double/Triple; `<P>-Spin <Lines>`)
 - [x] 1.4 Implement `is_difficult(piece, spin, lines, rule) -> bool`: false if `lines == 0`; true if `lines == 4`; else S1 → `piece == T and spin != NONE`, S2 → `spin != NONE`
@@ -16,7 +16,7 @@
 
 ## 3. Public API
 
-- [x] 3.1 Export `Event`, `EventKind`, `B2BRule` from `tetris_sdk/__init__.py` and add to `__all__`
+- [x] 3.1 Export `Event`, `EventKind`, `B2BRule` from `mino_sdk/__init__.py` and add to `__all__`
 
 ## 4. Tests
 

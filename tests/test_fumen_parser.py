@@ -1,5 +1,5 @@
 import pytest
-from tetris_sdk import parse_fumen, Board, Cell
+from mino_sdk import parse_fumen, Board, Cell
 
 
 SAMPLE_FUMEN = "v115@AhBtDewhBeBtEewhCeR4De0hR4CewhJeAgH"
@@ -65,7 +65,7 @@ class TestFieldDecoding:
 
 class TestDecodeFumenStructure:
     def test_decode_returns_page_with_field_and_piece(self):
-        from tetris_sdk.fumen.decoder import decode_fumen
+        from mino_sdk.fumen.decoder import decode_fumen
         pages = decode_fumen(SAMPLE_FUMEN)
         assert len(pages) == 1
         page = pages[0]

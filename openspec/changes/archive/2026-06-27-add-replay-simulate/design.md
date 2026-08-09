@@ -116,13 +116,13 @@ The validation report is first-class output: `pieces_placed`, `lines`, `b2b`, `t
 ### Module layout
 
 ```
-tetris_sdk/sim/
+mino_sdk/sim/
 ├── rng.py        # Rng protocol, TetrioRng, JstrisRng
 ├── queue.py      # Queue, Hold
 ├── handling.py   # handling state machine
 ├── gravity.py    # GravityProfile, registry, gravity_for
 └── engine.py     # GameState, step_frame, top-out
-tetris_sdk/replay/
+mino_sdk/replay/
 └── simulate.py   # simulate(replay), ReplaySim, validation report
 ```
 

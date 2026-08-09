@@ -2,8 +2,8 @@
 
 import pytest
 
-from tetris_sdk.replay.model import Platform, ReplayMeta
-from tetris_sdk.sim.gravity import (
+from mino_sdk.replay.model import Platform, ReplayMeta
+from mino_sdk.sim.gravity import (
     GravityProfile,
     GRAVITY_PROFILES,
     ZENITH_G_LOCK_DELAY,

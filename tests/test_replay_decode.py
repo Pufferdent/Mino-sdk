@@ -2,13 +2,13 @@ import os
 
 import pytest
 
-from tetris_sdk import (
+from mino_sdk import (
     InputEvent,
     Platform,
     ReplayInput,
     decode_replay,
 )
-from tetris_sdk.replay import decode_jstris, decode_tetrio
+from mino_sdk.replay import decode_jstris, decode_tetrio
 
 import json
 

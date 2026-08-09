@@ -1,5 +1,5 @@
 import pytest
-from tetris_sdk.solver.expressions import (
+from mino_sdk.solver.expressions import (
     parse_expression,
     evaluate_ast,
     evaluate_ast_all,

@@ -1,6 +1,6 @@
 import pytest
-from tetris_sdk.solver.saves import compute_save_percentage, filter_solves
-from tetris_sdk.solver.expressions import parse_expression
+from mino_sdk.solver.saves import compute_save_percentage, filter_solves
+from mino_sdk.solver.expressions import parse_expression
 
 
 class TestComputeSavePercentage:

@@ -1,6 +1,6 @@
 ## 1. Value types
 
-- [x] 1.1 Create `tetris_sdk/engine.py` with a `Move(Enum)` — `LEFT, RIGHT, SOFT_DROP, CW, CCW, FLIP, HARD_DROP` — and a helper identifying `CW/CCW/FLIP` as rotation moves
+- [x] 1.1 Create `mino_sdk/engine.py` with a `Move(Enum)` — `LEFT, RIGHT, SOFT_DROP, CW, CCW, FLIP, HARD_DROP` — and a helper identifying `CW/CCW/FLIP` as rotation moves
 - [x] 1.2 Add `SpinType(Enum)` — `NONE, MINI, FULL` — with a defined rank ordering (FULL > MINI > NONE)
 - [x] 1.3 Add a frozen, hashable `Placement` dataclass: `type, rotation, row, col, spin, lines_cleared, path: tuple[Move, ...]`
 
@@ -10,7 +10,7 @@
 - [x] 2.2 Audit and correct the stored `_JLSTZ_KICKS` and `_I_KICKS` in `pieces.py` to true `(drow, dcol)` (they were transcribed as `(x, y)` y-up); confirm against a decoded T-spin fumen
 - [x] 2.3 Implement `SRSPlus(RotationSystem)` sharing `SRS` rotation shapes; JLSTZ 90° reused from corrected `SRS`; I-piece 90° as the SRS+ symmetric variant (reflect SRS I kicks along the column axis)
 - [x] 2.4 Add SRS+ 180 kick tables for transitions `(0,2),(2,0),(1,3),(3,1)` for JLSTZ/T and I (O empty), translated into `(drow, dcol)` from `research/rotation-kick-tables-180.md`
-- [x] 2.5 Export `SRSPlus` from `tetris_sdk/__init__.py`
+- [x] 2.5 Export `SRSPlus` from `mino_sdk/__init__.py`
 
 ## 3. Movement primitives
 
@@ -36,7 +36,7 @@
 
 ## 6. Public API
 
-- [x] 6.1 Export `Move`, `SpinType`, `Placement`, and `reachable` (plus `rotate`, `soft_drop`, `immobile`, `classify_spin`) from `tetris_sdk/__init__.py` and add to `__all__`
+- [x] 6.1 Export `Move`, `SpinType`, `Placement`, and `reachable` (plus `rotate`, `soft_drop`, `immobile`, `classify_spin`) from `mino_sdk/__init__.py` and add to `__all__`
 
 ## 7. Tests
 

@@ -1,5 +1,5 @@
 import pytest
-from tetris_sdk import (
+from mino_sdk import (
     Board,
     PieceType,
     board_from_string,
@@ -9,7 +9,7 @@ from tetris_sdk import (
     Cell,
     parse_fumen,
 )
-from tetris_sdk.solver.core import solve_pc, Solution, _compute_topological_orderings
+from mino_sdk.solver.core import solve_pc, Solution, _compute_topological_orderings
 
 T = PieceType.T
 I = PieceType.I

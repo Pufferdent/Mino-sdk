@@ -89,7 +89,7 @@ Key map: `moveLeft→LEFT, moveRight→RIGHT, softDrop→SOFT_DROP, hardDrop→H
 ### Package layout
 
 ```
-tetris_sdk/replay/
+mino_sdk/replay/
 ├── __init__.py   # decode_replay, decode_tetrio, decode_jstris + re-exports
 ├── model.py      # Platform, ReplayInput, InputEvent, Handling, ReplayMeta, Replay
 ├── tetrio.py     # decode_tetrio

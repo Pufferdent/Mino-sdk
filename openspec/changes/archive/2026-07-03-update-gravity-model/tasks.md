@@ -12,7 +12,7 @@
 
 ## 3. Zenith data
 
-- [x] 3.1 Export `ZENITH_FLOOR_DISTANCE`, `ZENITH_GRAVITY_BUMPS`, `ZENITH_G_LOCK_DELAY`, `ZENITH_GR_LOCK_DELAY`, and `zenith_floor()`; re-export from `tetris_sdk.sim`
+- [x] 3.1 Export `ZENITH_FLOOR_DISTANCE`, `ZENITH_GRAVITY_BUMPS`, `ZENITH_G_LOCK_DELAY`, `ZENITH_GR_LOCK_DELAY`, and `zenith_floor()`; re-export from `mino_sdk.sim`
 
 ## 4. Tests
 

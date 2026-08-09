@@ -65,7 +65,7 @@ Frozen/hashable so events can be logged, compared, and used as test fixtures / r
 | T, MINI, lines 1/2 | `T-Spin Mini Single` / `T-Spin Mini Double` |
 | non-T, FULL, lines n | `<Piece>-Spin <Lines>` (e.g. `S-Spin Single`) |
 
-4-line clears are **`Quad`**, never "Tetris". The structured fields (`kind`, `spin`, `lines`) are the source of truth; `name` is a derived convenience.
+4-line clears are **`Quad`**, never the legacy four-line-clear name. The structured fields (`kind`, `spin`, `lines`) are the source of truth; `name` is a derived convenience.
 
 ### B2B rule modes (S1 / S2)
 
@@ -134,7 +134,7 @@ So `b2b` is the chain length (0 = none, 1 = first difficult clear, 2+ = genuine 
 ### Module layout
 
 ```
-tetris_sdk/
+mino_sdk/
 ├── events.py    # NEW: Event, EventKind, B2BRule, classify_lock, is_difficult
 ├── board.py     # MODIFIED: b2b/combo/b2b_rule attrs, lock(piece, spin) -> Event
 ├── engine.py    # unchanged (provides SpinType, Placement)

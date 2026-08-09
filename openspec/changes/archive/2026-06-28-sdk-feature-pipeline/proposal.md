@@ -1,6 +1,6 @@
 ## Why
 
-The Tetris SDK is being integrated into a PC-NN machine learning pipeline that relies on external tools (py_fumen_py, sfinder.jar) for fumen parsing, board manipulation, PC solving, and save analysis. These external dependencies add subprocess/JVM overhead, discard structured piece-operation data already parsed by the SDK's decoder, and force consumers to build their own utility layer. Bringing these capabilities into the SDK removes external tool dependencies, unblocks Python-native training pipelines, and gives all consumers a cohesive API.
+The Mino SDK is being integrated into a PC-NN machine learning pipeline that relies on external tools (py_fumen_py, sfinder.jar) for fumen parsing, board manipulation, PC solving, and save analysis. These external dependencies add subprocess/JVM overhead, discard structured piece-operation data already parsed by the SDK's decoder, and force consumers to build their own utility layer. Bringing these capabilities into the SDK removes external tool dependencies, unblocks Python-native training pipelines, and gives all consumers a cohesive API.
 
 ## What Changes
 
@@ -29,8 +29,8 @@ The Tetris SDK is being integrated into a PC-NN machine learning pipeline that r
 
 ## Impact
 
-- New module: `tetris_sdk/fumen/pipeline.py` or similar for MultiFumenPage and encoding
-- New module: `tetris_sdk/solver/` for solver core, save analysis, and expression parser
+- New module: `mino_sdk/fumen/pipeline.py` or similar for MultiFumenPage and encoding
+- New module: `mino_sdk/solver/` for solver core, save analysis, and expression parser
 - New standalone functions: `get_piece_cells()`, `board_from_string()`, `board_to_string()`
 - Dependencies: no new external packages needed (existing `lzstring` may be used for fumen encoding if needed by the algorithm)
 - Existing `parse_fumen` and `decode_fumen` APIs are not changed

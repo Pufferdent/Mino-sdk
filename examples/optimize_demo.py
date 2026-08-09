@@ -9,7 +9,7 @@ the expected score under optimal play.
 Run:  PYTHONPATH=. .venv/bin/python examples/optimize_demo.py
 """
 
-from tetris_sdk.opener import Diagram, Node
+from mino_sdk.opener import Diagram, Node
 
 BOARDS = {
     "start": "v115@vhAAgH",

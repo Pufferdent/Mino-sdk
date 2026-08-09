@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Union
 
-from tetris_sdk.solver.expressions import (
+from mino_sdk.solver.expressions import (
     ASTNode,
     parse_expression,
     evaluate_ast,
 )
 
 if TYPE_CHECKING:
-    from tetris_sdk.solver.core import Solution
+    from mino_sdk.solver.core import Solution
 
 
 def compute_save_percentage(

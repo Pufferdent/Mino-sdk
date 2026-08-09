@@ -5,7 +5,7 @@ pieces are the playable ones), and every line clear must be back-to-back
 eligible or the route is rejected.
 """
 
-from tetris_sdk.opener import Bridge, KeepB2B, Node
+from mino_sdk.opener import Bridge, KeepB2B, Node
 
 BOARDS = [
     "v115@vhAAgH",                                                    # empty

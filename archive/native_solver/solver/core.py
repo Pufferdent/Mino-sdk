@@ -3,10 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
-from tetris_sdk.board import Board, board_from_string, ROWS, COLS
-from tetris_sdk.engine import reachable
-from tetris_sdk.pieces import PieceType, SRS, RotationSystem, get_piece_cells
-from tetris_sdk.types import Cell
+from mino_sdk.board import Board, board_from_string, ROWS, COLS
+from mino_sdk.engine import reachable
+from mino_sdk.pieces import PieceType, SRS, RotationSystem, get_piece_cells
+from mino_sdk.types import Cell
 
 if TYPE_CHECKING:
     pass

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Piece System module defines the seven standard guideline Tetris tetromino pieces, a pluggable rotation system abstraction, the SRS rotation system with shapes and wall kick data, and operations for positioning and placing pieces on a Board.
+The Piece System module defines the seven standard guideline tetromino pieces, a pluggable rotation system abstraction, the SRS rotation system with shapes and wall kick data, and operations for positioning and placing pieces on a Board.
 
 ## Requirements
 

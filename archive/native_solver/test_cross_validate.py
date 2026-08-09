@@ -6,7 +6,7 @@ import pytest
 
 sys.path.insert(0, "reference/pc-saves-get")
 
-from tetris_sdk import (
+from mino_sdk import (
     Board,
     board_to_string,
     board_from_string,
@@ -15,8 +15,8 @@ from tetris_sdk import (
     encode_fumen,
     SRS,
 )
-from tetris_sdk.solver.core import solve_pc, Solution
-from tetris_sdk.solver.expressions import (
+from mino_sdk.solver.core import solve_pc, Solution
+from mino_sdk.solver.expressions import (
     parse_expression as sdk_parse,
     evaluate_ast as sdk_evaluate,
     evaluate_ast_all as sdk_evaluate_all,

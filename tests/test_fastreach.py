@@ -3,10 +3,10 @@ import random
 
 import pytest
 
-from tetris_sdk.engine import reachable
-from tetris_sdk.opener.bridge import _board_from, _cells_of, _spawn_for
-from tetris_sdk.opener.fastreach import reach
-from tetris_sdk.pieces import PieceType, SRS, SRSPlus
+from mino_sdk.engine import reachable
+from mino_sdk.opener.bridge import _board_from, _cells_of, _spawn_for
+from mino_sdk.opener.fastreach import reach
+from mino_sdk.pieces import PieceType, SRS, SRSPlus
 
 SYSTEMS = [SRS(), SRSPlus()]
 

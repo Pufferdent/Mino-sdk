@@ -1,5 +1,5 @@
 import pytest
-from tetris_sdk import MultiFumenPage, Page, Board, Cell
+from mino_sdk import MultiFumenPage, Page, Board, Cell
 
 SAMPLE_FUMEN = "v115@AhBtDewhBeBtEewhCeR4De0hR4CewhJeAgH"
 EMPTY_FUMEN = "v115@vhAAgH"
@@ -48,7 +48,7 @@ class TestMultiFumenPageMultiPage:
 
 class TestMultiFumenPageBoardMatchesParser:
     def test_board_matches_parse_fumen(self):
-        from tetris_sdk import parse_fumen
+        from mino_sdk import parse_fumen
         mf = MultiFumenPage.from_string(SAMPLE_FUMEN)
         boards = parse_fumen(SAMPLE_FUMEN)
         mf_board = mf.pages[0].board

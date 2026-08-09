@@ -2,7 +2,7 @@
 
 ## 2026-08-09 — the blocker is resolved: `TileSolver`
 
-`tetris_sdk/opener/tiles.py` now ships a solver, used by default by
+`mino_sdk/opener/tiles.py` now ships a solver, used by default by
 `Bridge.routes()` / `Diagram.chances()`. It is exact and evaluates a
 full-bag bridge (routes + hold coverage) in about a second: the three-bag
 example's heaviest line (3 clears) takes 1.0 s from a cold process, and the

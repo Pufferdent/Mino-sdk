@@ -1,8 +1,8 @@
 """Exact cover of a line's region, including stretched footprints."""
 from itertools import combinations, combinations_with_replacement
 
-from tetris_sdk.opener.tiling import _shapes, _variants, tile
-from tetris_sdk.pieces import PieceType
+from mino_sdk.opener.tiling import _shapes, _variants, tile
+from mino_sdk.pieces import PieceType
 
 BAG = tuple(PieceType[ch] for ch in "TILJSZO")
 

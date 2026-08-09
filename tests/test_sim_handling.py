@@ -1,7 +1,7 @@
 """Tests for the DAS/ARR/SDF handling model (sim-handling)."""
 
-from tetris_sdk.replay.model import Handling
-from tetris_sdk.sim.handling import HandlingState, WALL, FLOOR
+from mino_sdk.replay.model import Handling
+from mino_sdk.sim.handling import HandlingState, WALL, FLOOR
 
 
 def _h(das=6.5, arr=0.0, sdf=41.0, dcd=0.0):

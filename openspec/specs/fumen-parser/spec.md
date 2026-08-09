@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Fumen Parser decodes fumen v115 strings (a community-standard format for sharing Tetris board configurations) into Board objects, enabling local import of board states without external services.
+The Fumen Parser decodes fumen v115 strings (a community-standard format for sharing board configurations) into Board objects, enabling local import of board states without external services.
 
 ## Requirements
 

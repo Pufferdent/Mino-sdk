@@ -1,8 +1,8 @@
 """Tests for the seeded RNG, 7-bag queue, and hold (sim-queue)."""
 
-from tetris_sdk.pieces import PieceType
-from tetris_sdk.sim.rng import TetrioRng, JstrisRng
-from tetris_sdk.sim.queue import Queue, Hold
+from mino_sdk.pieces import PieceType
+from mino_sdk.sim.rng import TetrioRng, JstrisRng
+from mino_sdk.sim.queue import Queue, Hold
 
 _ALL = sorted(p.value for p in PieceType)
 
@@ -43,7 +43,7 @@ class TestJstrisRng:
     def test_alea_matches_client(self):
         # alea("4fkj9") first floats, verified bit-exact against the npm `alea`
         # package and the Jstris client (game.js blockRNG = alea(seed)).
-        from tetris_sdk.sim.rng import _alea
+        from mino_sdk.sim.rng import _alea
         rng = _alea("4fkj9")
         got = [round(rng(), 10) for _ in range(4)]
         assert got == [0.689865204, 0.8750085328, 0.7408756374, 0.9659070212]

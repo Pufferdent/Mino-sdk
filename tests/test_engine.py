@@ -1,6 +1,6 @@
 import pytest
 
-from tetris_sdk import (
+from mino_sdk import (
     Board,
     Cell,
     Piece,

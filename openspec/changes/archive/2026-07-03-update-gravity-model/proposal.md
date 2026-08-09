@@ -43,8 +43,8 @@ _None._
 
 ## Impact
 
-- `tetris_sdk/sim/gravity.py` (model, registry, lookup), `tetris_sdk/sim/engine.py`
-  (frame-aware gravity call), `tetris_sdk/sim/__init__.py` (exports),
+- `mino_sdk/sim/gravity.py` (model, registry, lookup), `mino_sdk/sim/engine.py`
+  (frame-aware gravity call), `mino_sdk/sim/__init__.py` (exports),
   `tests/test_sim_gravity.py`.
 - Behavior change: TETR.IO league/zenith replays (and any replay carrying
   gravity options) now simulate under correct ramping gravity instead of the

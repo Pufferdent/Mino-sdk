@@ -21,7 +21,7 @@ Splitting decode from simulate lets us ship something tractable and independentl
 
 ## Impact
 
-- **New package**: `tetris_sdk/replay/` — `model.py` (data types), `tetrio.py`, `jstris.py`, `__init__.py` (`decode_replay`, `decode_tetrio`, `decode_jstris`).
+- **New package**: `mino_sdk/replay/` — `model.py` (data types), `tetrio.py`, `jstris.py`, `__init__.py` (`decode_replay`, `decode_tetrio`, `decode_jstris`).
 - **Dependency**: `lz-string` (Python `lzstring`) for Jstris decompression.
 - **Public API** (`__init__.py`): export `Replay`, `ReplayMeta`, `InputEvent`, `ReplayInput`, `Platform`, `Handling`, `decode_replay`.
 - **Tests**: new `tests/test_replay_decode.py` using the two fixtures already in `tests/` (`bcf469fc701e.ttr`, `replay_28371693.txt`).

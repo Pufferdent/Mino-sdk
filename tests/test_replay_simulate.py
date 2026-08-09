@@ -7,9 +7,9 @@ available. The native engine is exercised for structural correctness.
 
 import pytest
 
-from tetris_sdk.replay import decode_replay
-from tetris_sdk.replay.simulate import simulate
-from tetris_sdk.replay.teto import teto_available
+from mino_sdk.replay import decode_replay
+from mino_sdk.replay.simulate import simulate
+from mino_sdk.replay.teto import teto_available
 
 _40L = "tests/bcf469fc701e.ttr"
 _BLITZ = "tests/cf4f62a670db.ttr"
@@ -57,7 +57,7 @@ class TestNativeEngine:
         assert isinstance(sim.lines_cleared, int)
 
     def test_gravity_override_accepted(self):
-        from tetris_sdk.sim.gravity import GravityProfile
+        from mino_sdk.sim.gravity import GravityProfile
         sim = simulate(decode_replay(_40L), gravity=GravityProfile(g=0.0))
         assert sim.pieces_placed > 0
 

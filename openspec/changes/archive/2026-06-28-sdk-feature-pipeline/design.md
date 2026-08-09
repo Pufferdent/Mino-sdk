@@ -1,6 +1,6 @@
 ## Context
 
-The Tetris SDK currently provides fumen *decoding* only via `decode_fumen` / `parse_fumen`, with no encoding path. The `parse_fumen` function throws away piece operation data that `decode_fumen` already parses. Consumers (PC-NN pipeline) currently rely on `py_fumen_py` for encoding and cumulative board states, and on `sfinder.jar` (Java subprocess) for PC solving. The goal is to bring these capabilities into the SDK as a native Python pipeline.
+The Mino SDK currently provides fumen *decoding* only via `decode_fumen` / `parse_fumen`, with no encoding path. The `parse_fumen` function throws away piece operation data that `decode_fumen` already parses. Consumers (PC-NN pipeline) currently rely on `py_fumen_py` for encoding and cumulative board states, and on `sfinder.jar` (Java subprocess) for PC solving. The goal is to bring these capabilities into the SDK as a native Python pipeline.
 
 ## Goals / Non-Goals
 
@@ -31,7 +31,7 @@ The Tetris SDK currently provides fumen *decoding* only via `decode_fumen` / `pa
 ### Decision 2: Module layout
 
 ```
-tetris_sdk/
+mino_sdk/
 ├── fumen/
 │   ├── decoder.py          # unchanged
 │   ├── parser.py           # unchanged: parse_fumen

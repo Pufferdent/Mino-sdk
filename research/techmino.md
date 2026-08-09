@@ -4,7 +4,7 @@
 
 ## Why it's interesting as a reference
 
-Techmino is a **full, faithful re-implementation of guideline-and-beyond Tetris mechanics in readable scripting code**. Unlike a binary client (TETR.IO) or a search tool (sfinder), the *entire game logic is open Lua source* — making it a primary reference for *how a complete modern stacker is actually built*, including the parts an SDK usually has to reverse-engineer.
+Techmino is a **full, faithful re-implementation of guideline-and-beyond stacker mechanics in readable scripting code**. Unlike a binary client (TETR.IO) or a search tool (sfinder), the *entire game logic is open Lua source* — making it a primary reference for *how a complete modern stacker is actually built*, including the parts an SDK usually has to reverse-engineer.
 
 ## Architecture (LÖVE / Lua)
 
@@ -37,7 +37,7 @@ Holds the per-frame simulation: piece spawning (bag/RNG), gravity & soft/hard dr
 ## Relevance to this SDK
 
 - **Reference for live-game mechanics** the SDK's static board model doesn't yet cover: gravity, lock delay, DAS/ARR input timing, garbage/attack tables, B2B/combo scoring, spin bonus rules.
-- **Rotation-system-as-data** (`RSlist.lua`) validates designing `RotationSystem` (already in `tetris_sdk/pieces.py`) as a pluggable table rather than hardcoded SRS — and gives concrete kick tables for systems beyond SRS.
+- **Rotation-system-as-data** (`RSlist.lua`) validates designing `RotationSystem` (already in `mino_sdk/pieces.py`) as a pluggable table rather than hardcoded SRS — and gives concrete kick tables for systems beyond SRS.
 - **Mode/eventset pattern** is a model for declaratively defining rule variants if the SDK grows beyond a single ruleset.
 - **License caveat:** LGPL-3.0 — fine to *study* and re-derive mechanics, but copying Lua source/data tables verbatim into the SDK carries copyleft obligations. Use as a *specification reference*, not a source to vendor.
 

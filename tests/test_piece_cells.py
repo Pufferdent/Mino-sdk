@@ -1,5 +1,5 @@
 import pytest
-from tetris_sdk import get_piece_cells, PieceType, Piece, SRS
+from mino_sdk import get_piece_cells, PieceType, Piece, SRS
 
 
 ALL_TYPES = [
