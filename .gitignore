@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# OS / editors
+.DS_Store
+.opencode/
+
+# Node
+node_modules/
+
+# Vendored upstream source tree (build it from upstream instead)
+research/solution-finder/
+
+# sfinder.jar is intentionally tracked (see reference/sfinder.jar)
+
+# Vendored third-party clone (has its own .git)
+reference/pc-saves-get/
