@@ -57,7 +57,8 @@ class KeepB2B(_Base):
     def _ok(self, step) -> bool:
         if not step.cleared:
             return True
-        return is_difficult(step.piece, step.spin, step.cleared, self.rule)
+        return is_difficult(step.piece, step.spin, step.cleared, self.rule,
+                            perfect_clear=step.perfect_clear)
 
     def allows(self, route) -> bool:
         return all(self._ok(s) for s in route.steps)

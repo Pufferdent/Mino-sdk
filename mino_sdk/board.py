@@ -142,7 +142,14 @@ class Board:
         self.place(piece)  # raises before mutating if invalid
         lines = self.clear_lines()
         kind, name = classify_lock(piece.type, spin, lines)
-        difficult = is_difficult(piece.type, spin, lines, self.b2b_rule)
+        # Decided before the b2b bookkeeping below, because emptying the board
+        # makes the clear difficult regardless of what cleared it.
+        perfect_clear = not any(
+            cell != Cell.EMPTY for row in self._grid for cell in row
+        )
+        difficult = is_difficult(
+            piece.type, spin, lines, self.b2b_rule, perfect_clear=perfect_clear,
+        )
 
         if lines == 0:
             self.combo = 0
@@ -156,9 +163,6 @@ class Board:
                 self.b2b = 0
                 back_to_back = False
 
-        perfect_clear = not any(
-            cell != Cell.EMPTY for row in self._grid for cell in row
-        )
         return Event(
             kind=kind,
             piece=piece.type,

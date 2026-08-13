@@ -26,7 +26,8 @@ frame — the complement empty, rows clearing the moment they fill — using
 movement after the drop. So routes needing a tuck or a spin are found rather
 than skipped. Each placement is classified by what it costs the player: with an
 instant soft drop a tuck or a spin is free, so the only expensive placement is
-one needing the piece halted partway down — ``Step.gravity_wait``.
+one needing the piece halted partway down — ``Step.gravity_wait``, decided on
+demand because it takes a second search and most callers never ask.
 
 A line's *chance* is then coverage over queue space. Routes are placement
 orders, but a player gets a queue and one hold slot, so most orders are out of
@@ -37,7 +38,7 @@ one. Constraints live in :mod:`mino_sdk.opener.constraints`.
 from __future__ import annotations
 
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import lru_cache
 from itertools import combinations
 
@@ -90,15 +91,50 @@ class Step:
     col: int
     spin: SpinType
     cells: tuple[tuple[int, int], ...]
-    colors: tuple = ()
+    # ``{(row, col): piece}`` for the stack this placement leaves. Kept as the
+    # search's own mapping and only put in order when a fumen is asked for:
+    # sorting it per placement cost more than the reachability check did. Out
+    # of the identity, since the cells and the piece already determine it.
+    colors: dict | tuple = field(default=(), repr=False, compare=False)
     cleared: int = 0
-    gravity_wait: bool = False
+    origin: tuple = field(default=(), repr=False, compare=False)
+    _wait: bool | None = field(default=None, repr=False, compare=False)
+
+    @property
+    def perfect_clear(self) -> bool:
+        """True when this placement cleared lines and left the board empty.
+
+        ``colors`` is the stack the placement leaves, so an empty one after a
+        clear is a PC. It matters for back-to-back: a perfect clear is
+        difficult whatever cleared it, so a line ending on a plain single that
+        happens to be a PC still carries the chain.
+        """
+        return bool(self.cleared) and not self.colors
+
+    @property
+    def gravity_wait(self) -> bool:
+        """True when the piece must be halted partway down to land here.
+
+        Decided on demand: it takes a second reachability search — the same
+        one under an instant soft drop — and most callers never ask. ``origin``
+        is the stack the placement was made on, ``(rows, system)``.
+        """
+        if self._wait is None:
+            rows, system = self.origin
+            object.__setattr__(
+                self, "_wait",
+                frozenset(self.cells) not in _instant_set(rows, self.piece, system),
+            )
+        return self._wait
 
     @property
     def fumen(self) -> str:
         """The stack after this placement. Encoded on demand — encoding every
         candidate during the search costs more than the search itself."""
-        return _encode_colors(self.colors)
+        colors = self.colors
+        if isinstance(colors, dict):
+            colors = tuple(sorted(colors.items()))
+        return _encode_colors(colors)
 
     @property
     def spun(self) -> bool:
@@ -161,9 +197,11 @@ class Route:
         total = 0
         for step in self.steps:
             total += attack(step.piece, step.spin, step.cleared,
-                            rule=rule, b2b=b2b)
+                            rule=rule, b2b=b2b,
+                            perfect_clear=step.perfect_clear)
             if step.cleared:
-                b2b = is_difficult(step.piece, step.spin, step.cleared, rule)
+                b2b = is_difficult(step.piece, step.spin, step.cleared, rule,
+                                   perfect_clear=step.perfect_clear)
         return total
 
     def b2b(self, *, initial: bool = False,
@@ -176,7 +214,8 @@ class Route:
         for step in self.steps:
             if not step.cleared:
                 continue
-            difficult = is_difficult(step.piece, step.spin, step.cleared, rule)
+            difficult = is_difficult(step.piece, step.spin, step.cleared, rule,
+                                     perfect_clear=step.perfect_clear)
             if difficult and alive:
                 count += 1
             alive = difficult
@@ -486,11 +525,9 @@ class Bridge:
                         frozenset(cells))
                     if spin is None:
                         continue
-                    waited = frozenset(cells) not in _instant_set(
-                        rows, piece, self.system)
                     step = Step(piece=piece, rotation=rot, row=prow, col=pcol,
                                 spin=spin, cells=cells, cleared=len(full),
-                                gravity_wait=waited)
+                                origin=(rows, self.system))
                     if _c.prune(per_step, (step,)):
                         continue
                     for r in sorted(full, reverse=True):

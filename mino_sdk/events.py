@@ -79,11 +79,20 @@ def classify_lock(
 
 
 def is_difficult(
-    piece: PieceType, spin: SpinType, lines: int, rule: B2BRule
+    piece: PieceType, spin: SpinType, lines: int, rule: B2BRule,
+    *, perfect_clear: bool = False,
 ) -> bool:
-    """Whether a clear is back-to-back-eligible under ``rule``."""
+    """Whether a clear is back-to-back-eligible under ``rule``.
+
+    ``perfect_clear`` is whether the board was left empty. A perfect clear is
+    difficult whatever made it, so a plain single that happens to empty the
+    board continues the chain rather than breaking it — which is what decides
+    whether a B2B run can be carried through the end of a PC.
+    """
     if lines == 0:
         return False
+    if perfect_clear:
+        return True
     if lines == 4:
         return True
     if rule == B2BRule.S1:
@@ -104,6 +113,7 @@ def attack(
     *,
     rule: B2BRule = B2BRule.S2,
     b2b: bool = False,
+    perfect_clear: bool = False,
 ) -> int:
     """Lines sent by one lock under TETR.IO Season 2 rules.
 
@@ -119,6 +129,6 @@ def attack(
         base = _S2_TSPIN_ATTACK.get(lines, 6)
     else:
         base = _S2_ATTACK.get(lines, 4)
-    if b2b and is_difficult(piece, spin, lines, rule):
+    if b2b and is_difficult(piece, spin, lines, rule, perfect_clear=perfect_clear):
         base += 1
     return base

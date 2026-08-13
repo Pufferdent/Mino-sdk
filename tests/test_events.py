@@ -155,11 +155,14 @@ class TestLock:
 class TestBackToBack:
     def test_chain_progression(self):
         board = Board()
+        # A cell no clear below can reach, so none of these clears is also a
+        # perfect clear -- which would make even the plain single difficult.
+        board.set_cell(10, 0, Cell.GARBAGE)
         # first quad: starts chain, not yet b2b
         i = _vertical_i(); _setup_clear(board, i)
         ev1 = board.lock(i)
         assert ev1.lines == 4 and not ev1.back_to_back and board.b2b == 1
-        # second quad (board emptied by PC): now back-to-back
+        # second quad: now back-to-back
         i = _vertical_i(); _setup_clear(board, i)
         ev2 = board.lock(i)
         assert ev2.back_to_back and board.b2b == 2
@@ -167,6 +170,27 @@ class TestBackToBack:
         s = _horizontal_i_single(); _setup_clear(board, s)
         ev3 = board.lock(s)
         assert not ev3.difficult and not ev3.back_to_back and board.b2b == 0
+
+    def test_perfect_clear_is_difficult_whatever_cleared_it(self):
+        """A PC continues back-to-back even on a clear that otherwise would not.
+
+        The same single breaks the chain when something is left standing, so
+        the difficulty comes from emptying the board rather than from the clear.
+        """
+        board = Board()
+        board.b2b = 3
+        single = _horizontal_i_single(); _setup_clear(board, single)
+        ev = board.lock(single)
+        assert ev.perfect_clear and ev.lines == 1
+        assert ev.difficult and ev.back_to_back and board.b2b == 4
+
+        board = Board()
+        board.b2b = 3
+        board.set_cell(10, 0, Cell.GARBAGE)
+        single = _horizontal_i_single(); _setup_clear(board, single)
+        ev = board.lock(single)
+        assert not ev.perfect_clear
+        assert not ev.difficult and board.b2b == 0
 
     def test_spin_zero_preserves_chain(self):
         board = Board()
@@ -181,6 +205,8 @@ class TestBackToBack:
     def test_rule_selection_changes_difficulty(self):
         for rule, expected in [(B2BRule.S1, False), (B2BRule.S2, True)]:
             board = Board(b2b_rule=rule)
+            # Kept off a perfect clear, which is difficult under either rule.
+            board.set_cell(10, 0, Cell.GARBAGE)
             s = _s_double(); _setup_clear(board, s)
             ev = board.lock(s, SpinType.FULL)
             assert ev.lines == 2
