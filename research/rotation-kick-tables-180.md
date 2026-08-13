@@ -34,7 +34,12 @@ I        01 [1,0][-2,0][-2,1][1,-2]       10 [-1,0][2,0][-1,2][2,-1]
   180:   02 [0,-1]   13 [1,0]   20 [0,1]   31 [-1,0]
 O        (none)
 ```
-Note: SRS+ I-piece 90° kicks are **symmetric about the y-axis** (left side mirrored) — the difference from plain SRS that makes SRS+ "true TETR.IO" rather than "SRS + 180".
+Note: the SRS+ I-piece 90° kicks above are the difference from plain SRS that
+makes SRS+ "true TETR.IO" rather than "SRS + 180". They are **not** a simple
+y-axis mirror of the plain-SRS I kicks (negating the column): TETR.IO also
+reorders the horizontal tests, e.g. plain `01` is `[-2,0][1,0][-2,1][1,-2]`
+while SRS+ `01` is `[1,0][-2,0][-2,1][1,-2]`. Transcribe the table, don't derive
+it — a mirrored guess was wrong on all 8 transitions.
 
 ---
 

@@ -96,11 +96,21 @@ _I_KICKS: dict[tuple[int, int], list[Offset]] = {
 }
 
 # --- SRS+ (true TETR.IO) kick data -----------------------------------------
-# I-piece 90 kicks for SRS+: the SRS I kicks reflected along the column axis
-# (negate dcol), giving the y-axis-symmetric I kicks SRS+ uses.
+# I-piece 90 kicks for SRS+, verbatim from the TETR.IO engine (teto
+# `kicks["SRS+"].i_kicks`, package/src/engine/utils/kicks/data.ts): [x, y] with
+# y pointing DOWN, (0, 0) implicit, converted here to (drow, dcol) = (-y, x).
+# These are NOT the plain-SRS I kicks mirrored about the column axis — TETR.IO
+# reorders the horizontal tests too, so the table must be transcribed, not
+# derived. (The mirrored guess was wrong on all 8 transitions.)
 _I_KICKS_PLUS: dict[tuple[int, int], list[Offset]] = {
-    transition: [(dr, -dc) for dr, dc in offsets]
-    for transition, offsets in _I_KICKS.items()
+    (0, 1): [(0, 0), (0, 1), (0, -2), (-1, -2), (2, 1)],
+    (1, 0): [(0, 0), (0, -1), (0, 2), (-2, -1), (1, 2)],
+    (1, 2): [(0, 0), (0, -1), (0, 2), (2, -1), (-1, 2)],
+    (2, 1): [(0, 0), (0, -2), (0, 1), (1, -2), (-2, 1)],
+    (2, 3): [(0, 0), (0, 2), (0, -1), (1, 2), (-2, -1)],
+    (3, 2): [(0, 0), (0, 1), (0, -2), (2, 1), (-1, -2)],
+    (3, 0): [(0, 0), (0, 1), (0, -2), (-2, 1), (1, -2)],
+    (0, 3): [(0, 0), (0, -1), (0, 2), (-1, 2), (2, -1)],
 }
 
 # 180 kick tables (transitions 0<->2 and 1<->3). Sourced from the TETR.IO

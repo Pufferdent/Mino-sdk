@@ -121,12 +121,22 @@ class TestSRSPlus:
                    PieceType.S, PieceType.Z]:
             assert plus.kicks(pt, 0, 1) == srs.kicks(pt, 0, 1)
 
-    def test_i_90_is_column_reflection(self):
-        srs, plus = SRS(), SRSPlus()
-        srs_i = srs.kicks(PieceType.I, 0, 1)
-        plus_i = plus.kicks(PieceType.I, 0, 1)
-        assert plus_i != srs_i
-        assert plus_i == [(dr, -dc) for dr, dc in srs_i]
+    def test_i_90_matches_teto(self):
+        # TETR.IO SRS+ I-piece 90 kicks, verbatim from the teto engine
+        # (kicks["SRS+"].i_kicks, [x,y] y-down) converted to (drow, dcol).
+        plus = SRSPlus()
+        expected = {
+            (0, 1): [(0, 0), (0, 1), (0, -2), (-1, -2), (2, 1)],
+            (1, 0): [(0, 0), (0, -1), (0, 2), (-2, -1), (1, 2)],
+            (1, 2): [(0, 0), (0, -1), (0, 2), (2, -1), (-1, 2)],
+            (2, 1): [(0, 0), (0, -2), (0, 1), (1, -2), (-2, 1)],
+            (2, 3): [(0, 0), (0, 2), (0, -1), (1, 2), (-2, -1)],
+            (3, 2): [(0, 0), (0, 1), (0, -2), (2, 1), (-1, -2)],
+            (3, 0): [(0, 0), (0, 1), (0, -2), (-2, 1), (1, -2)],
+            (0, 3): [(0, 0), (0, -1), (0, 2), (-1, 2), (2, -1)],
+        }
+        for (frm, to), want in expected.items():
+            assert list(plus.kicks(PieceType.I, frm, to)) == want, (frm, to)
 
     def test_defines_180_kicks(self):
         plus = SRSPlus()
