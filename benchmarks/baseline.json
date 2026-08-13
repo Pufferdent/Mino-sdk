@@ -1,0 +1,222 @@
+{
+  "warm": false,
+  "repeat": 5,
+  "results": [
+    {
+      "name": "bag7-01",
+      "clears": 0,
+      "routes": 1337,
+      "playable": 3192,
+      "total": 5040,
+      "t_routes": 0.383027541989577,
+      "t_odds": 0.016935958003159612
+    },
+    {
+      "name": "bag7-02",
+      "clears": 0,
+      "routes": 2688,
+      "playable": 4704,
+      "total": 5040,
+      "t_routes": 0.832761625002604,
+      "t_odds": 0.0425348330027191
+    },
+    {
+      "name": "bag7-03",
+      "clears": 0,
+      "routes": 539,
+      "playable": 2534,
+      "total": 5040,
+      "t_routes": 0.25804120900284033,
+      "t_odds": 0.01643700001295656
+    },
+    {
+      "name": "bag7-04",
+      "clears": 0,
+      "routes": 1260,
+      "playable": 4200,
+      "total": 5040,
+      "t_routes": 0.2630124999996042,
+      "t_odds": 0.028085958998417482
+    },
+    {
+      "name": "bag7-05",
+      "clears": 0,
+      "routes": 0,
+      "playable": 0,
+      "total": 5040,
+      "t_routes": 0.6839832910045516,
+      "t_odds": 0.010600667010294273
+    },
+    {
+      "name": "bag7-06",
+      "clears": 0,
+      "routes": 0,
+      "playable": 0,
+      "total": 5040,
+      "t_routes": 0.7073663329938427,
+      "t_odds": 0.0005145830073161051
+    },
+    {
+      "name": "bag7-07",
+      "clears": 0,
+      "routes": 0,
+      "playable": 0,
+      "total": 5040,
+      "t_routes": 0.10926275000383612,
+      "t_odds": 0.0005034999921917915
+    },
+    {
+      "name": "bag7-08",
+      "clears": 0,
+      "routes": 0,
+      "playable": 0,
+      "total": 5040,
+      "t_routes": 0.17090804100735113,
+      "t_odds": 0.0004690409987233579
+    },
+    {
+      "name": "bag6-01",
+      "clears": 0,
+      "routes": 248,
+      "playable": 3448,
+      "total": 5040,
+      "t_routes": 0.3376521669997601,
+      "t_odds": 0.019320167004480027
+    },
+    {
+      "name": "bag6-02",
+      "clears": 0,
+      "routes": 840,
+      "playable": 4340,
+      "total": 5040,
+      "t_routes": 0.33338354199077,
+      "t_odds": 0.02647920801246073
+    },
+    {
+      "name": "bag6-03",
+      "clears": 0,
+      "routes": 360,
+      "playable": 3360,
+      "total": 5040,
+      "t_routes": 0.13952475000405684,
+      "t_odds": 0.01661600000807084
+    },
+    {
+      "name": "bag6-04",
+      "clears": 0,
+      "routes": 300,
+      "playable": 2856,
+      "total": 5040,
+      "t_routes": 0.1432308329967782,
+      "t_odds": 0.01524312500259839
+    },
+    {
+      "name": "bag6-05",
+      "clears": 0,
+      "routes": 495,
+      "playable": 2788,
+      "total": 5040,
+      "t_routes": 0.23578033299418166,
+      "t_odds": 0.017310584007645957
+    },
+    {
+      "name": "bag6-06",
+      "clears": 0,
+      "routes": 248,
+      "playable": 3448,
+      "total": 5040,
+      "t_routes": 0.36921108300157357,
+      "t_odds": 0.019214832995203324
+    },
+    {
+      "name": "bag6-07",
+      "clears": 0,
+      "routes": 180,
+      "playable": 2184,
+      "total": 5040,
+      "t_routes": 0.09170229200390168,
+      "t_odds": 0.014596583001548424
+    },
+    {
+      "name": "bag6-08",
+      "clears": 0,
+      "routes": 0,
+      "playable": 0,
+      "total": 5040,
+      "t_routes": 0.3287062919989694,
+      "t_odds": 0.0005401669914135709
+    },
+    {
+      "name": "clear2-01",
+      "clears": 2,
+      "routes": 120,
+      "playable": 1680,
+      "total": 5040,
+      "t_routes": 0.10061054199468344,
+      "t_odds": 0.014918041008058935
+    },
+    {
+      "name": "clear2-02",
+      "clears": 2,
+      "routes": 210,
+      "playable": 2072,
+      "total": 5040,
+      "t_routes": 0.1559169170068344,
+      "t_odds": 0.016517625001142733
+    },
+    {
+      "name": "clear2-03",
+      "clears": 2,
+      "routes": 528,
+      "playable": 3710,
+      "total": 5040,
+      "t_routes": 0.35841833299491554,
+      "t_odds": 0.02011354199203197
+    },
+    {
+      "name": "clear2-04",
+      "clears": 2,
+      "routes": 180,
+      "playable": 2184,
+      "total": 5040,
+      "t_routes": 0.16915175000031013,
+      "t_odds": 0.01912766700843349
+    },
+    {
+      "name": "clear2-05",
+      "clears": 2,
+      "routes": 510,
+      "playable": 3948,
+      "total": 5040,
+      "t_routes": 0.21031949999451172,
+      "t_odds": 0.019471749998047017
+    },
+    {
+      "name": "clear2-06",
+      "clears": 2,
+      "routes": 120,
+      "playable": 1624,
+      "total": 5040,
+      "t_routes": 0.10555137500341516,
+      "t_odds": 0.01450066699180752
+    },
+    {
+      "name": "clear2-07",
+      "clears": 2,
+      "routes": 275,
+      "playable": 3024,
+      "total": 5040,
+      "t_routes": 0.24048429199319798,
+      "t_odds": 0.019759666989557445
+    },
+    {
+      "name": "clear2-08",
+      "clears": 2,
+      "routes": 117,
+      "playable": 1524,
+      "total": 5040,
+      "t_routes": 0.17029741599981207,
+      "t_odds": 0.014048666998860426
+    }
+  ]
+}

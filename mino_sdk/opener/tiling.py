@@ -50,7 +50,8 @@ def _shapes(piece: PieceType,
     return tuple(out)
 
 
-def _variants(shape, ar: int, ac: int, cleared: frozenset) -> list:
+@lru_cache(maxsize=None)
+def _variants(shape, ar: int, ac: int, cleared: frozenset) -> tuple:
     """Anchored cell-sets for ``shape``: connected, plus stretched across ``cleared``.
 
     A piece placed *after* a clear straddles the vanished row: in the lifted
@@ -59,6 +60,9 @@ def _variants(shape, ar: int, ac: int, cleared: frozenset) -> list:
     rows all lie in ``cleared`` is a legal footprint. Which of those the player
     can actually produce — the straddled rows must already be gone when the
     piece lands — is not decided here; the real-frame replay rejects the rest.
+
+    Cached: the exact-cover search asks about the same anchor cell over and
+    over as it backtracks, and the answer depends only on the arguments.
     """
     rows = sorted({r for r, _ in shape})
     by_row = [tuple(c for r, c in shape if r == row) for row in rows]
@@ -76,7 +80,7 @@ def _variants(shape, ar: int, ac: int, cleared: frozenset) -> list:
             go(i + 1, nxt, acc + list(row_cells))
 
     go(0, ar, [])
-    return out
+    return tuple(out)
 
 
 def tile(

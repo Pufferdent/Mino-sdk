@@ -1,14 +1,16 @@
-"""The bitboard search must agree with the engine, which stays the definition."""
-import random
+"""The bitboard search must agree with the engine, which stays the definition.
 
-import pytest
+One rotation system and one descent mode per run — whichever ``--system`` and
+``--mode`` name (see ``conftest.py``), defaulting to the opener package's own
+SRS+ and full soft drop. ``benchmarks/check_reach.py`` is the same check over a
+much larger stack corpus when a combination needs proving properly.
+"""
+import random
 
 from mino_sdk.engine import reachable
 from mino_sdk.opener.bridge import _board_from, _cells_of, _spawn_for
 from mino_sdk.opener.fastreach import reach
-from mino_sdk.pieces import PieceType, SRS, SRSPlus
-
-SYSTEMS = [SRS(), SRSPlus()]
+from mino_sdk.pieces import PieceType
 
 
 def _stacks(n=25, seed=7):
@@ -23,26 +25,27 @@ def _stacks(n=25, seed=7):
     return out
 
 
-@pytest.mark.parametrize("system", SYSTEMS, ids=lambda s: s.name)
-def test_matches_engine_on_random_stacks(system):
+def _engine_map(rows, piece, system, instant):
+    """What the engine says, keyed the way :func:`reach` keys its answer."""
+    want = {}
+    for p in reachable(_board_from(rows), piece, system,
+                       spawn=_spawn_for(rows, piece, system), instant=instant):
+        cells = frozenset(_cells_of(piece, p.rotation, p.row, p.col, system))
+        if cells not in want or p.spin.rank > want[cells].rank:
+            want[cells] = p.spin
+    return want
+
+
+def test_matches_engine_on_random_stacks(system, instant):
+    """The same placements the engine finds, with the same spins.
+
+    Equality, not containment: an instant search that quietly drops placements
+    it should find passes a subset check, and that is exactly how the
+    bit-parallel descent could go wrong.
+    """
     for rows in _stacks():
-        board = _board_from(rows)
         for piece in PieceType:
-            want = {}
-            spawn = _spawn_for(rows, piece, system)
-            for p in reachable(board, piece, system, spawn=spawn):
-                cells = frozenset(_cells_of(piece, p.rotation, p.row, p.col,
-                                            system))
-                if cells not in want or p.spin.rank > want[cells].rank:
-                    want[cells] = p.spin
-            got = reach(rows, piece, system=system)
+            want = _engine_map(rows, piece, system, instant)
+            got = reach(rows, piece, instant, system)
             assert set(got) == set(want), (rows, piece.name, system.name)
             assert got == want, (rows, piece.name, system.name, "spin mismatch")
-
-
-@pytest.mark.parametrize("system", SYSTEMS, ids=lambda s: s.name)
-def test_instant_is_a_subset_of_full_reachability(system):
-    for rows in _stacks(10, seed=3):
-        for piece in PieceType:
-            assert set(reach(rows, piece, True, system)) <= \
-                set(reach(rows, piece, system=system))

@@ -11,6 +11,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 # Run a single test file / test
 .venv/bin/python -m pytest tests/test_opener.py -q
+
+# Reachability is checked under one rotation system and one descent mode per
+# run (default srs+/full); name another to check it instead
+.venv/bin/python -m pytest tests/test_fastreach.py -q --system srs --mode instant
+.venv/bin/python benchmarks/check_reach.py --system srs --mode instant
 .venv/bin/python -m pytest tests/test_pc.py -k pattern -q
 
 # One-time setup (Homebrew Python is externally managed, so use the venv)
@@ -45,7 +50,7 @@ Genuine perfect-clear search is delegated to knewjade's `sfinder.jar` (`referenc
 - `hold.py` — which *queues* (not orderings) can produce a route; coverage counts queues. Forks: `any_odds`/`any_chance` (in `bridge.py`) give the union chance that at least one of several same-leftover bridges is playable.
 - `diagram.py` — `Diagram.board()/.line()/.chances()` for linear chains, plus the graph optimizer for forked diagrams: `optimize(start, score)` maximizes expected user-defined score under optimal per-queue play (scorer SPI: any callable judging a `Route`); `chance_to(start, target)` is the probability special case; `explain()` breaks down every `(board, leftover)` state. Saves are grouped per `(score, saved)`, DAG only.
 - `solver.py` — the `Solver` protocol (`solve(bridge, cap) -> list[Route]`). The shipped implementation is `tiles.TileSolver`, used by default when no solver is passed.
-- `tiles.py` — the shipped solver: *lifted exact cover proposes, real-frame replay disposes*. Supporting modules: `lifted.py` (re-insert cleared rows so a mid-clear line becomes a static region; every placement of the cleared rows is a "frame"), `tiling.py` (exact cover of the region, including **stretched** footprints for pieces that straddle an already-cleared row — required for exactness), `fastreach.py` (bitboard BFS reachability with kicks, tucks, spins, and 180s when the system has them; `test_fastreach.py` pins it to `engine.reachable` under both SRS and SRS+). The rotation system defaults to TETR.IO's SRS+ and is configurable per `Bridge`/`Diagram` (`system=SRS()`). A full-bag bridge evaluates in about a second.
+- `tiles.py` — the shipped solver: *lifted exact cover proposes, real-frame replay disposes*. Supporting modules: `lifted.py` (re-insert cleared rows so a mid-clear line becomes a static region; every placement of the cleared rows is a "frame"), `tiling.py` (exact cover of the region, including **stretched** footprints for pieces that straddle an already-cleared row — required for exactness), `fastreach.py` (bitboard BFS reachability with kicks, tucks, spins, and 180s when the system has them; `test_fastreach.py` pins it to `engine.reachable`, and `benchmarks/check_reach.py` does the same over a much larger corpus; both check **one** rotation system and **one** descent mode per run — `--system srs|srs+`, `--mode full|instant`, defaulting to srs+/full). The rotation system defaults to TETR.IO's SRS+ and is configurable per `Bridge`/`Diagram` (`system=SRS()`). A full-bag bridge evaluates in ~0.1-0.25s. `benchmarks/bench_opener.py` is the regression benchmark (24 real openers from the opener DB; `--compare benchmarks/baseline.json` flags any case whose route count or queue coverage moves, so a "speedup" that loses routes cannot pass).
 
 **Read `OPENER_SEARCH_NOTES.md` before touching opener/solver work.** The top section describes the shipped solver and its verification; below it are hard-won, easy-to-rederive-wrongly results: the mino tally, why the complement-as-garbage encoding is wrong when few lines clear, why sfinder's raw solution counts over-report (disconnected pieces / fake mid-clears), the even-T checkerboard parity theorem and exactly where it stops holding, and performance measurements showing unrestricted forward search doesn't scale.
 

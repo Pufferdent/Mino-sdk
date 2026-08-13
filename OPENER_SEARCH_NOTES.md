@@ -1,12 +1,64 @@
 # Opener search — working notes
 
+## 2026-08-10 — 4x faster, same answers
+
+`benchmarks/bench_opener.py` is now the regression benchmark: 24 lines
+sampled from Eyevy's opener database (`OpenerResearch/openerdb.txt`, 811
+usable boards) and hard-coded — 8 full-bag openers from empty, 8 six-piece
+openers from empty, 8 two-clear lines between database boards, including
+end shapes that are impossible and must be *proved* impossible. Every case
+records its route count and queue coverage, so `--compare` reports a
+"speedup" that quietly loses routes as a failure rather than a win.
+
+Measured before/after back to back, median of 5 (the machine is noisy
+enough that a single run moved a total by 2x — always `--repeat`):
+**7.28 s -> 1.80 s, 4.04x**, every case between 3.2x and 8.3x, no case
+changing its answer. Four changes, in order of what they bought:
+
+1. **`Step.gravity_wait` is lazy** (~2.2x on its own). It was computed for
+   every placement the replay accepted, and it costs a second reachability
+   search — the instant-soft-drop one — on top of the one that decided the
+   placement was legal at all. Nothing in a chance calculation reads it.
+   `Step` now carries the stack it was placed on and answers on demand.
+2. **`fastreach.reach` is bit-parallel** (~1.3x more). It was a textbook BFS
+   over `(rotation, row, column)` tuples — a quarter-million states per
+   call, and 80% of all runtime. A column is one bit, so a row of states is
+   one integer: sideways movement is a flood (`m | m<<1 | m>>1` masked by
+   free columns), a drop is an AND with the row below, and a kick is one
+   shift by `lo_from + dc - lo_to`. Kick *priority* survives the transposal:
+   walking the kick list while carrying `left &= ~src_ok` is exactly "this
+   kick only applies where every earlier one was blocked". The whole search
+   is a fixpoint over ~4x15 integers, swept top-down so a long fall lands in
+   one pass.
+3. **`Step.colors` is kept as the search's own dict** and only sorted when
+   a fumen is actually asked for. Sorting a 28-entry mapping per placement
+   cost more than the reachability check did.
+4. **`tiling._variants` and `tiles._placement_of` are cached.** Both are
+   pure functions of their arguments that exact-cover backtracking asks
+   again and again; this is most of what the 2-clear cases gained.
+
+Equivalence was re-checked at each step against `engine.reachable` — the
+definition of correct — and that check now lives in
+`benchmarks/check_reach.py`: 303 stacks (half uniform noise, half
+overhang-heavy, where a tuck or a kick is the only way in) x 7 pieces, zero
+mismatches under each of the four system/mode combinations. It checks one
+combination per run, `--system srs|srs+ --mode full|instant`, defaulting to
+the opener package's own srs+/full; `tests/test_fastreach.py` takes the same
+two options and the same defaults.
+
+Worth knowing, from before this: `test_fastreach.py` used to check
+`instant=True` only as a *subset* of full reachability, which passes for a
+search that quietly drops placements it should find — exactly how the
+bit-parallel descent could have gone wrong. It now checks equality.
+
 ## 2026-08-09 — the blocker is resolved: `TileSolver`
 
 `mino_sdk/opener/tiles.py` now ships a solver, used by default by
 `Bridge.routes()` / `Diagram.chances()`. It is exact and evaluates a
 full-bag bridge (routes + hold coverage) in about a second: the three-bag
 example's heaviest line (3 clears) takes 1.0 s from a cold process, and the
-whole example runs in ~2.1 s.
+whole example runs in ~2.1 s. (Those are the 2026-08-09 numbers; see the
+section above — a full-bag line is now ~0.1-0.25 s.)
 
 The shape: **lifted exact cover proposes, real-frame replay disposes.**
 

@@ -7,9 +7,13 @@ which asks the same question for every stack it touches — the three-bag script
 spent essentially all of its time there.
 
 This is the same search over the same rules, with the board as one integer per
-row and every orientation's column masks precomputed. Results are meant to
-agree with the engine exactly; ``tests/test_fastreach.py`` checks that on random
-stacks, and the engine stays the definition of correct.
+row and every orientation's column masks precomputed. It is not a state-by-state
+BFS: a column is one bit, so a whole row of states is one integer, and sideways
+movement, dropping and each kick are shift-and-mask over all ten columns at once
+— a fixpoint over ~4x15 integers instead of a queue of a quarter-million tuples.
+Results are meant to agree with the engine exactly;
+``tests/test_fastreach.py`` checks that on random stacks, and the engine stays
+the definition of correct.
 
 The rotation system is a parameter. The opener default is TETR.IO's SRS+
 (:data:`DEFAULT_SYSTEM`), whose 180 kicks enable the flip move, exactly as the
@@ -19,7 +23,6 @@ engine enables ``FLIP`` when a system defines 180 kicks. Pass ``system=SRS()``
 
 from __future__ import annotations
 
-from collections import deque
 from functools import lru_cache
 
 from mino_sdk.board import COLS
@@ -129,91 +132,151 @@ def reach(rows: tuple, piece: PieceType, instant: bool = False,
     ]
     shapes = [_shape(system, piece, rot) for rot in range(4)]
 
-    # Collision as one bit test. For each rotation, ``bad[row + _OFF]`` has
-    # bit ``col - lo`` set when the piece collides at that origin. The offsets
+    # Collision as one bit test. For each rotation, ``free[rot][row + _OFF]``
+    # has bit ``col - lo`` set when the piece fits at that origin. The offsets
     # conspire: with cols encoded from ``lo = -min_dc``, a band's blocked
-    # columns are exactly ``rows[row + dr] >> b`` for each set bit ``b``.
+    # columns are exactly ``rows[row + dr] >> b`` for each set bit ``b`` — and
+    # those shifts are the same for every row, so they are found once here.
     _OFF = 3
+    _PAD = 3  # guard entries so a kick's row can be indexed without a bounds test
     height = top + _OFF + 8
     lo_hi: list = []
-    bad: list = []
+    span_of: list = []
+    free: list = []
     for rot in range(4):
         bands, min_dc, max_dc = _bands(system, piece, rot)
         lo = -min_dc
         hi = COLS - 1 - max_dc
         span = (1 << (hi - lo + 1)) - 1
-        rot_bad = []
+        shifted = []
+        for dr, band in bands:
+            offsets = []
+            b = band
+            while b:
+                low = b & -b
+                offsets.append(low.bit_length() - 1)
+                b ^= low
+            shifted.append((dr, offsets))
+        # Below the floor and above the window are the two constant answers:
+        # nothing fits, everything fits.
+        rot_free = [0] * _PAD
         for row in range(-_OFF, height - _OFF):
             mask = 0
-            for dr, band in bands:
+            for dr, offsets in shifted:
                 r = row + dr
                 if r < 0:
                     mask = span
                     break
                 if r < top:
                     pattern = rows[r]
-                    b = band
-                    while b:
-                        low = b & -b
-                        mask |= pattern >> low.bit_length() - 1
-                        b ^= low
-            rot_bad.append(mask)
+                    for off in offsets:
+                        mask |= pattern >> off
+            rot_free.append(span & ~mask)
+        rot_free.extend([span] * _PAD)
         lo_hi.append((lo, hi))
-        bad.append(rot_bad)
+        span_of.append(span)
+        free.append(rot_free)
 
     def blocked(rot: int, row: int, col: int) -> bool:
         lo, hi = lo_hi[rot]
         if col < lo or col > hi:
             return True
-        idx = row + _OFF
-        if idx < 0:
-            return True
-        if idx >= height:
-            return False  # open air above the precomputed window
-        return bool(bad[rot][idx] >> (col - lo) & 1)
+        return not (free[rot][row + _OFF + _PAD] >> (col - lo) & 1)
 
+    # The search is over (rotation, row, column) states, but a column is one
+    # bit, so a whole row of states is one integer: ``mask[rot][idx]`` has bit
+    # ``col - lo`` set for every reachable column. Sideways movement, dropping
+    # and each kick are then shift-and-mask over ten columns at once, and the
+    # per-state Python loop — which was the whole cost of this module —
+    # disappears.
     # Open air above the stack is fully connected — sideways movement is free
     # and a rotation's first kick works — so instead of wandering there from
     # spawn, seed the search with every orientation at every column, one row
     # above the surface. Placements and spins are identical; the air walk that
     # dominated the state count is skipped.
-    seen = {}
-    queue = deque()
+    seed = top + 2 + _OFF
+    mask = [[0] * height for _ in range(4)]
+    spun = [[0] * height for _ in range(4)]
     for rot in range(4):
-        lo, hi = lo_hi[rot]
-        for col in range(lo, hi + 1):
-            state = (rot, top + 2, col)
-            seen[state] = False
-            queue.append(state)
-    while queue:
-        rot, row, col = queue.popleft()
+        mask[rot][seed] = span_of[rot]
 
-        moves = []
-        for dc in (-1, 1):
-            moves.append(((rot, row, col + dc), False))
-        if instant:
-            drop = row
-            while not blocked(rot, drop - 1, col):
-                drop -= 1
-            if drop != row:
-                moves.append(((rot, drop, col), False))
-        else:
-            moves.append(((rot, row - 1, col), False))
-        for to, kicks in kick_table[rot]:
-            for dr, dc in kicks:
-                if not blocked(to, row + dr, col + dc):
-                    moves.append(((to, row + dr, col + dc), True))
-                    break
+    # Shift from one orientation's column encoding to another's, given a kick.
+    # A source bit sits at ``col - lo_from``; its destination bit is
+    # ``col + dc - lo_to``, so every transfer is one shift by ``lo_from + dc -
+    # lo_to`` — forward to move states, backward to pull the destination's free
+    # columns into the source's frame.
+    shifts = [
+        [(to, tuple((dr, lo_hi[rot][0] + dc - lo_hi[to][0]) for dr, dc in kicks))
+         for to, kicks in kick_table[rot]]
+        for rot in range(4)
+    ]
 
-        for nxt, is_rot in moves:
-            if blocked(*nxt):
-                continue
-            if nxt in seen:
-                if is_rot and not seen[nxt]:
-                    seen[nxt] = True
-                continue
-            seen[nxt] = is_rot
-            queue.append(nxt)
+    changed = True
+    while changed:
+        changed = False
+        # Top-down, so a piece falling many rows lands in a single sweep.
+        for idx in range(height - 1, -1, -1):
+            pad = idx + _PAD
+            for rot in range(4):
+                m = mask[rot][idx]
+                if not m:
+                    continue
+                rot_free = free[rot]
+                f = rot_free[pad]
+
+                # Sideways: flood left and right through free columns.
+                while True:
+                    grown = (m | m << 1 | m >> 1) & f
+                    if grown == m:
+                        break
+                    m = grown
+                if m != mask[rot][idx]:
+                    mask[rot][idx] = m
+                    changed = True
+
+                rot_mask = mask[rot]
+                if instant:
+                    # Soft drop teleports: only where the fall stops is a state.
+                    falling, at = m, idx
+                    while falling:
+                        below = falling & rot_free[at + _PAD - 1]
+                        landed = falling & ~below
+                        if landed and at != idx and landed & ~rot_mask[at]:
+                            rot_mask[at] |= landed
+                            changed = True
+                        falling, at = below, at - 1
+                        if at < 0:
+                            break
+                elif idx:
+                    down = m & rot_free[pad - 1]
+                    if down & ~rot_mask[idx - 1]:
+                        rot_mask[idx - 1] |= down
+                        changed = True
+
+                for to, kicks in shifts[rot]:
+                    left = m
+                    to_free = free[to]
+                    for dr, s in kicks:
+                        if not left:
+                            break
+                        nxt = idx + dr
+                        ok = to_free[nxt + _PAD]
+                        # The destination's free columns, read in this
+                        # orientation's bit positions.
+                        src_ok = (ok >> s if s >= 0 else ok << -s) & f
+                        moved = left & src_ok
+                        left &= ~src_ok  # a later kick is only tried when
+                        if not moved:    # every earlier one is blocked
+                            continue
+                        if not 0 <= nxt < height:
+                            continue
+                        dest = moved << s if s >= 0 else moved >> -s
+                        if dest & ~mask[to][nxt]:
+                            mask[to][nxt] |= dest
+                            changed = True
+                        if dest & ~spun[to][nxt]:
+                            spun[to][nxt] |= dest
+                            changed = True
 
     def immobile(rot: int, row: int, col: int) -> bool:
         for dr, dc in ((1, 0), (-1, 0), (0, -1), (0, 1)):
@@ -231,12 +294,26 @@ def reach(rows: tuple, piece: PieceType, instant: bool = False,
             return SpinType.NONE
         return SpinType.FULL if immobile(rot, row, col) else SpinType.NONE
 
+    # A state rests where the row below it is blocked, so the resting columns
+    # of a row are one AND against that row's free mask — no need to visit the
+    # states that are still falling.
     out: dict = {}
-    for (rot, row, col), rotated in seen.items():
-        if not blocked(rot, row - 1, col):
-            continue  # still falling
-        cells = frozenset((row + dr, col + dc) for dr, dc in shapes[rot])
-        kind = spin(rot, row, col, rotated)
-        if cells not in out or kind.rank > out[cells].rank:
-            out[cells] = kind
+    for rot in range(4):
+        lo = lo_hi[rot][0]
+        shape = shapes[rot]
+        rot_free = free[rot]
+        for idx in range(height):
+            resting = mask[rot][idx] & ~rot_free[idx + _PAD - 1]
+            if not resting:
+                continue
+            rotated = spun[rot][idx]
+            row = idx - _OFF
+            while resting:
+                bit = resting & -resting
+                resting ^= bit
+                col = bit.bit_length() - 1 + lo
+                cells = frozenset((row + dr, col + dc) for dr, dc in shape)
+                kind = spin(rot, row, col, bool(rotated & bit))
+                if cells not in out or kind.rank > out[cells].rank:
+                    out[cells] = kind
     return out

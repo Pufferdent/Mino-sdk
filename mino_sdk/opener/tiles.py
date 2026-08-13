@@ -26,13 +26,14 @@ the state is fully determined by which tiling entries remain.
 
 from __future__ import annotations
 
+from functools import lru_cache
+
 from mino_sdk.board import COLS
 from mino_sdk.opener import constraints as _c
 from mino_sdk.opener.bridge import (
     LineClear,
     Route,
     Step,
-    _instant_set,
     _orients,
     _reach_map,
     _rows_of,
@@ -43,8 +44,13 @@ from mino_sdk.opener.tiling import tile
 _FULL_ROW = (1 << COLS) - 1
 
 
+@lru_cache(maxsize=None)
 def _placement_of(piece, rcells: frozenset, system) -> tuple[int, int, int]:
-    """``(rotation, row, col)`` of the orientation whose cells these are."""
+    """``(rotation, row, col)`` of the orientation whose cells these are.
+
+    Cached: routes revisit the same placement constantly, and the answer
+    depends on nothing but the cells.
+    """
     base_r = min(r for r, _ in rcells)
     base_c = min(c for _, c in rcells)
     offsets = tuple(sorted((r - base_r, c - base_c) for r, c in rcells))
@@ -150,10 +156,9 @@ class TileSolver:
                 rot, prow, pcol = _placement_of(piece, rcells, bridge.system)
                 step = Step(piece=piece, rotation=rot, row=prow, col=pcol,
                             spin=spin, cells=tuple(sorted(rcells)),
-                            colors=tuple(sorted(nxt.items())),
+                            colors=nxt,
                             cleared=len(full),
-                            gravity_wait=rcells not in _instant_set(
-                                rows, piece, bridge.system))
+                            origin=(rows, bridge.system))
                 steps.append(step)
                 if not _c.prune(bridge.constraints, steps):
                     walk(tuple(stack), nxt, remaining - {entry},

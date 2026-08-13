@@ -39,7 +39,8 @@ def test_variants_stretch_only_across_cleared_rows():
     vertical_i = next(s for s in _shapes(PieceType.I)
                       if len({r for r, _ in s}) == 4)
     plain = _variants(vertical_i, 0, 0, frozenset())
-    assert plain == [frozenset({(0, 0), (1, 0), (2, 0), (3, 0)})]
+    # A tuple, not a list: the result is cached and must not be mutable.
+    assert plain == (frozenset({(0, 0), (1, 0), (2, 0), (3, 0)}),)
 
     stretched = _variants(vertical_i, 0, 0, frozenset({2}))
     assert frozenset({(0, 0), (1, 0), (3, 0), (4, 0)}) in stretched
